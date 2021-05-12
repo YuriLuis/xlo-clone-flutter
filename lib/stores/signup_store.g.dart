@@ -43,6 +43,13 @@ mixin _$SignupStore on _SignupStore, Store {
       (_$pass2ValidComputed ??= Computed<bool>(() => super.pass2Valid,
               name: '_SignupStore.pass2Valid'))
           .value;
+  Computed<bool> _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_SignupStore.isFormValid'))
+          .value;
 
   final _$nameAtom = Atom(name: '_SignupStore.name');
 
@@ -119,6 +126,21 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  final _$loadingAtom = Atom(name: '_SignupStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   final _$_SignupStoreActionController = ActionController(name: '_SignupStore');
 
   @override
@@ -177,6 +199,17 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 name: ${name},
@@ -184,11 +217,13 @@ email: ${email},
 phone: ${phone},
 pass1: ${pass1},
 pass2: ${pass2},
+loading: ${loading},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 phoneValid: ${phoneValid},
 pass1Valid: ${pass1Valid},
-pass2Valid: ${pass2Valid}
+pass2Valid: ${pass2Valid},
+isFormValid: ${isFormValid}
     ''';
   }
 }

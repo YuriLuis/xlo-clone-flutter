@@ -1,5 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
+import 'package:xlo_mobx/model/user.dart';
+import 'package:xlo_mobx/repositories/user_repository.dart';
 
 part 'signup_store.g.dart';
 
@@ -39,7 +41,7 @@ abstract class _SignupStore with Store{
     }else if(email.isEmpty) {
       return 'Campo Obrigatório';
     }else {
-      return 'Email- inválido';
+      return 'Email inválido';
     }
   }
 
@@ -57,7 +59,7 @@ abstract class _SignupStore with Store{
     }else if(phone.isEmpty) {
       return 'Campo Obrigatório';
     }else {
-      return 'Celular inválido';
+      return 'Phone inválido';
     }
   }
 
@@ -94,4 +96,29 @@ abstract class _SignupStore with Store{
       return 'Senhas não coincidem';
     }
   }
+
+  @computed
+  bool get isFormValid => nameValid && emailValid && phoneValid && pass1Valid && pass2Valid;
+  Function get signUpPressed => isFormValid && !loading ? _signUp : null;
+  Future<void> _signUp() async{
+    loading = true;
+
+    final user = User(
+      name: name ,
+      email: email,
+      phone: phone,
+      password: pass1
+    );
+
+    await UserRepository().signUp(user);
+
+
+    loading = false;
+  }
+
+  @observable
+  bool loading = false;
+
+  @action
+  void setLoading(bool value) => loading = value;
 }

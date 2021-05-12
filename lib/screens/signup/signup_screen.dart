@@ -40,6 +40,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       Observer(builder: (_) {
                         return TextField(
+                          enabled: !signupStore.loading,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Exemplo: João S',
@@ -58,6 +59,7 @@ class SignUpScreen extends StatelessWidget {
                       Observer(
                         builder: (_) {
                           return TextField(
+                            enabled: !signupStore.loading,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Exemplo: joao@gmail.com',
@@ -79,6 +81,7 @@ class SignUpScreen extends StatelessWidget {
                       Observer(
                         builder: (_) {
                           return TextField(
+                            enabled: !signupStore.loading,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: '(99) 99999-9999',
@@ -89,7 +92,7 @@ class SignUpScreen extends StatelessWidget {
                               FilteringTextInputFormatter.digitsOnly,
                               TelefoneInputFormatter()
                             ],
-                            onChanged: signupStore.setEmail,
+                            onChanged: signupStore.setPhone,
                           );
                         },
                       ),
@@ -103,6 +106,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       Observer(builder: (_) {
                         return TextField(
+                          enabled: !signupStore.loading,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               isDense: true,
@@ -120,6 +124,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       Observer(builder: (_) {
                         return TextField(
+                          enabled: !signupStore.loading,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               isDense: true,
@@ -128,19 +133,23 @@ class SignUpScreen extends StatelessWidget {
                           onChanged: signupStore.setPass2,
                         );
                       }),
-                      Container(
-                        height: 40,
-                        margin: EdgeInsets.only(top: 20, bottom: 12),
-                        child: RaisedButton(
-                          color: Colors.orange,
-                          child: Text('CADASTRAR'),
-                          textColor: Colors.white,
-                          elevation: 0,
-                          onPressed: () {},
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
-                      ),
+                      Observer(builder: (_) {
+                        return Container(
+                          height: 40,
+                          margin: EdgeInsets.only(top: 20, bottom: 12),
+                          child: RaisedButton(
+                            color: Colors.orange,
+                            child: signupStore.loading ?  CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            ): Text('CADASTRAR'),
+                            textColor: Colors.white,
+                            elevation: 0,
+                            onPressed: signupStore.signUpPressed,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        );
+                      }),
                       Divider(
                         color: Colors.black,
                       ),
