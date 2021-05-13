@@ -12,6 +12,24 @@ abstract class _SignupStore with Store{
   @observable
   String name;
 
+  @observable
+  String error;
+
+  @observable
+  bool loading = false;
+
+  @observable
+  String email;
+
+  @observable
+  String phone;
+
+  @observable
+  String pass1;
+
+  @observable
+  String pass2;
+
   @action
   void setName(String value) => name = value;
 
@@ -26,9 +44,6 @@ abstract class _SignupStore with Store{
       return 'Nome muito curto';
     }
   }
-
-  @observable
-  String email;
 
   @action
   void setEmail(String value) => email = value;
@@ -45,9 +60,6 @@ abstract class _SignupStore with Store{
     }
   }
 
-  @observable
-  String phone;
-
   @action
   void setPhone(String value) => phone = value;
 
@@ -63,9 +75,6 @@ abstract class _SignupStore with Store{
     }
   }
 
-  @observable
-  String pass1;
-
   @action
   void setPass1(String value) => pass1 = value;
 
@@ -80,9 +89,6 @@ abstract class _SignupStore with Store{
       return 'Senha muito curta';
     }
   }
-
-  @observable
-  String pass2;
 
   @action
   void setPass2(String value) => pass2 = value;
@@ -110,14 +116,16 @@ abstract class _SignupStore with Store{
       password: pass1
     );
 
-    await UserRepository().signUp(user);
-
+    try{
+      final resultUser = await UserRepository().signUp(user);
+      print(resultUser);
+    }catch(e){
+      error = e;
+    }
 
     loading = false;
   }
 
-  @observable
-  bool loading = false;
 
   @action
   void setLoading(bool value) => loading = value;

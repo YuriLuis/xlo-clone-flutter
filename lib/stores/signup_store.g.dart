@@ -66,6 +66,36 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  final _$errorAtom = Atom(name: '_SignupStore.error');
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  final _$loadingAtom = Atom(name: '_SignupStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_SignupStore.email');
 
   @override
@@ -123,21 +153,6 @@ mixin _$SignupStore on _SignupStore, Store {
   set pass2(String value) {
     _$pass2Atom.reportWrite(value, super.pass2, () {
       super.pass2 = value;
-    });
-  }
-
-  final _$loadingAtom = Atom(name: '_SignupStore.loading');
-
-  @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
-  }
-
-  @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
     });
   }
 
@@ -213,11 +228,12 @@ mixin _$SignupStore on _SignupStore, Store {
   String toString() {
     return '''
 name: ${name},
+error: ${error},
+loading: ${loading},
 email: ${email},
 phone: ${phone},
 pass1: ${pass1},
 pass2: ${pass2},
-loading: ${loading},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 phoneValid: ${phoneValid},
