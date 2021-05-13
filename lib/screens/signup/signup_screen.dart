@@ -35,14 +35,17 @@ class SignUpScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Observer(builder: (_){
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: ErrorBox(
-                            message : signupStore.error
-                          ),
-                        );
-                      }),
+                      ClipRRect(
+                        borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(30),
+                            left: Radius.circular(30)),
+                        child: Observer(builder: (_) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: ErrorBox(message: signupStore.error),
+                          );
+                        }),
+                      ),
                       FieldTitle(
                         title: 'Apelido',
                         subtititle: 'Como aparecerá em seus anúncios.',
@@ -149,9 +152,12 @@ class SignUpScreen extends StatelessWidget {
                           child: RaisedButton(
                             disabledColor: Colors.orange.withAlpha(120),
                             color: Colors.orange,
-                            child: signupStore.loading ?  CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation(Colors.white),
-                            ): Text('CADASTRAR'),
+                            child: signupStore.loading
+                                ? CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.white),
+                                  )
+                                : Text('CADASTRAR'),
                             textColor: Colors.white,
                             elevation: 0,
                             onPressed: signupStore.signUpPressed,
