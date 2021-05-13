@@ -147,6 +147,7 @@ class SignUpScreen extends StatelessWidget {
                           height: 40,
                           margin: EdgeInsets.only(top: 20, bottom: 12),
                           child: RaisedButton(
+                            disabledColor: Colors.orange.withAlpha(120),
                             color: Colors.orange,
                             child: signupStore.loading ?  CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(Colors.white),

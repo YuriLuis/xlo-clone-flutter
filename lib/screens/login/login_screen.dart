@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/signup/signup_screen.dart';
+import 'package:xlo_mobx/stores/login_store.dart';
 
 class LoginScreen extends StatelessWidget {
+  final LoginStore loginStore = LoginStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,11 +15,13 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Container(
         alignment: Alignment.center,
+
         ///adiciona um scrollview no widget.
         child: SingleChildScrollView(
           child: Card(
             ///Arredonda o card..
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             elevation: 8,
             margin: EdgeInsets.symmetric(horizontal: 32),
             child: Padding(
@@ -39,13 +45,17 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.w700),
                     ),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !loginStore.loading,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                          errorText: loginStore.emailError),
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: loginStore.setEmail,
+                    );
+                  }),
                   SizedBox(
                     height: 16,
                   ),
@@ -62,57 +72,79 @@ class LoginScreen extends StatelessWidget {
                               fontWeight: FontWeight.w700),
                         ),
                         GestureDetector(
-                          onTap: (){
-
-                          },
+                          onTap: () {},
                           child: Text(
                             'Esqueceu sua senha?',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
-                                color: Colors.blue,),
+                              color: Colors.blue,
+                            ),
                           ),
                         )
                       ],
                     ),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    obscureText: true,
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !loginStore.loading,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                          errorText: loginStore.passwordError),
+                      obscureText: true,
+                      onChanged: loginStore.setPassword,
+                    );
+                  }),
+                  Observer(
+                    builder: (_) {
+                      return Container(
+                        height: 40,
+                        margin: EdgeInsets.only(top: 20, bottom: 12),
+                        child: RaisedButton(
+                          disabledColor: Colors.orange.withAlpha(120),
+                          color: Colors.orange,
+                          child: loginStore.loading
+                              ? CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                )
+                              : Text('ENTRAR'),
+                          textColor: Colors.white,
+                          elevation: 0,
+                          onPressed: loginStore.loginPressed,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                      );
+                    },
                   ),
-                  Container(
-                    height: 40,
-                    margin: EdgeInsets.only(top: 20, bottom: 12),
-                    child: RaisedButton(
-                      color: Colors.orange,
-                      child: Text('ENTRAR'),
-                      textColor: Colors.white,
-                      elevation: 0,
-                      onPressed: (){},
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    ),
+                  Divider(
+                    color: Colors.black,
                   ),
-                  Divider(color: Colors.black,),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      Text('Não tem uma conta? ', style: TextStyle(fontSize: 16),),
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => SignUpScreen()));
-                        },
-                        child: Text('Cadastre-se',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.blue,
-                              fontSize: 16,
-                            )),
-                      )
-                    ],
-                  ),)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          'Não tem uma conta? ',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => SignUpScreen()));
+                          },
+                          child: Text('Cadastre-se',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Colors.blue,
+                                fontSize: 16,
+                              )),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
