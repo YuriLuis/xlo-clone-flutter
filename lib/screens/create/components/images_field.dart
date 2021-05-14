@@ -7,6 +7,10 @@ import 'package:xlo_mobx/screens/create/components/images_source_dialog.dart';
 class ImagesField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    void onImageSelected(File image){
+      Navigator.of(context).pop();
+    }
     return Container(
       color: Colors.grey[200],
       height: 120,
@@ -20,10 +24,10 @@ class ImagesField extends StatelessWidget {
               onTap: () {
                 if (Platform.isAndroid) {
                   ///Dialog para SO Android
-                  showModalBottomSheet(context: context, builder: (_) => ImagesSourceDialog());
+                  showModalBottomSheet(context: context, builder: (_) => ImagesSourceDialog(onImageSelected));
                 } else {
                   ///Dialog para SO IOS
-                  showCupertinoModalPopup(context: context, builder: (_) => ImagesSourceDialog());
+                  showCupertinoModalPopup(context: context, builder: (_) => ImagesSourceDialog(onImageSelected));
                 }
               },
               child: CircleAvatar(
