@@ -33,7 +33,7 @@ class ImagesSourceDialog extends StatelessWidget {
               onPressed: getFromGallery, child: Text('Galeria')),
         ],
       );
-    }
+    } 
   }
 
   Future<void> getFromCamera() async {
@@ -69,6 +69,9 @@ class ImagesSourceDialog extends StatelessWidget {
         doneButtonTitle: 'Concluir'
       )
     );
-    onImageSelected(croppedFile);
+
+    if(croppedFile != null){
+      onImageSelected(croppedFile);
+    }
   }
 }
