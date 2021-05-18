@@ -4,7 +4,8 @@ import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 
 class CategoryRepository {
-  Future<List<Category>>getList() async {
+
+  Future<List<Category>>getListCategory() async {
     /// query já trás todas as categorias cadastradas no parse serve
     /// em ordem alfábetica.
     final queryBuilder = QueryBuilder(ParseObject(keyCategoryTable))
