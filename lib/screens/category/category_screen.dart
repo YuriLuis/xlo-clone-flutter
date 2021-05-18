@@ -8,7 +8,7 @@ import 'package:xlo_mobx/model/category.dart';
 import 'package:xlo_mobx/stores/category_store.dart';
 
 class CategoryScreen extends StatelessWidget {
-  CategoryScreen({this.selected, this.showAll});
+  CategoryScreen({this.selected, this.showAll = true});
 
   final Category selected;
   final bool showAll;
@@ -40,12 +40,50 @@ class CategoryScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return null;
+                final categories = showAll
+                    ? categoryStore.allCategoryList
+                    : categoryStore.categoryList;
+                return ListView.separated(
+                  itemCount: categories.length,
+                  separatorBuilder: (_, __) {
+                    return Divider(
+                      height: 0.1,
+                      color: Colors.grey,
+                    );
+                  },
+                  itemBuilder: (_, index) {
+                    final category = categories[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop(category);
+                      },
+                      child: Container(
+                        height: 50,
+                        color: _validaESelecionaCategoria(category, selected)
+                            ? Colors.purple.withAlpha(50)
+                            : null,
+                        alignment: Alignment.center,
+                        child: Text(
+                          category.description,
+                          style: TextStyle(
+                              color: Colors.grey[700],
+                              fontWeight: _validaESelecionaCategoria(category, selected)
+                                  ? FontWeight.bold
+                                  : null),
+                        ),
+                      ),
+                    );
+                  },
+                );
               }
             },
           ),
         ),
       ),
     );
+  }
+
+  bool _validaESelecionaCategoria(Category category, Category selected) {
+    return category.id == selected?.id;
   }
 }

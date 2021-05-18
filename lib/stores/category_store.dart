@@ -18,20 +18,20 @@ abstract class _CategoryStore with Store{
   String error;
 
   @action
+  void setError(String value) => error = value;
+
+  @action
   void setCategories(List<Category> categories){
     categoryList.clear();
     categoryList.addAll(categories);
   }
 
-  @action
-  void setError(String value) => error = value;
-
   Future<void> _loadCategories() async {
     try{
-      final categories = await CategoryRepository().getListCategory();
+      final List<Category> categories = await CategoryRepository().getListCategory();
       setCategories(categories);
     }catch(e){
-      setError(e);
+      setError(e.toString());
     }
   }
 

@@ -14,7 +14,7 @@ class CategoryRepository {
     final response = await queryBuilder.query();
     if (response.success) {
       return response.results
-        ..map((parseObject) => Category.fromParse(parseObject)).toList();
+        .map((parseObject) => Category.fromParse(parseObject)).toList();
     } else {
       throw ParseErrors.getDescription(response.error.code);
     }
