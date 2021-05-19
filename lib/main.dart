@@ -8,15 +8,15 @@ import 'package:xlo_mobx/stores/category_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
 
-
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Inicia o binding do flutter para não ter erro
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Inicia o binding do flutter para não ter erro
   await initializeParse();
   setupLocators();
   runApp(MyApp());
 }
 
-void setupLocators(){
+void setupLocators() {
   GetIt.I.registerSingleton(PageStore());
   GetIt.I.registerSingleton(UserManagerStore());
   GetIt.I.registerSingleton(CategoryStore());
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.purple,
           appBarTheme: AppBarTheme(elevation: 0),
           cursorColor: Colors.purple),
-      home: CategoryScreen(),
+      home: BaseScreen(),
     );
   }
 }

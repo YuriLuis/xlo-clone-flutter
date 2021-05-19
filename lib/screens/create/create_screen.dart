@@ -5,6 +5,8 @@ import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/create/components/images_field.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
+import 'components/category_field.dart';
+
 class CreateScreen extends StatelessWidget {
 
   final CreateStore createStore = CreateStore();
@@ -31,55 +33,44 @@ class CreateScreen extends StatelessWidget {
         shape:
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 8,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ImagesField(createStore: createStore,),
-            TextFormField(
-              decoration: InputDecoration(
-                  contentPadding: contentPadding,
-                  labelText: 'Titulo *',
-                  labelStyle: labelStyle
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ImagesField(createStore: createStore,),
+              TextFormField(
+                decoration: InputDecoration(
+                    contentPadding: contentPadding,
+                    labelText: 'Titulo *',
+                    labelStyle: labelStyle
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  contentPadding: contentPadding,
-                  labelText: 'Descrição *',
-                  labelStyle: labelStyle
+              TextFormField(
+                decoration: InputDecoration(
+                    contentPadding: contentPadding,
+                    labelText: 'Descrição *',
+                    labelStyle: labelStyle
+                ),
+                maxLines: null,
               ),
-              maxLines: null,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  contentPadding: contentPadding,
-                  labelText: 'Categoria *',
-                  labelStyle: labelStyle
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  contentPadding: contentPadding,
-                  labelText: 'CEP *',
-                  labelStyle: labelStyle
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  contentPadding: contentPadding,
-                  labelText: 'Preço *',
-                  labelStyle: labelStyle,
-                prefixText: 'R\$ ',
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                RealInputFormatter(
-                  centavos: true
-                )
-              ],
-            )
-          ],
+              CategoryField(createStore: createStore,),
+              TextFormField(
+                decoration: InputDecoration(
+                    contentPadding: contentPadding,
+                    labelText: 'Preço *',
+                    labelStyle: labelStyle,
+                  prefixText: 'R\$ ',
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  RealInputFormatter(
+                    centavos: true
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
