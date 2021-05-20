@@ -25,15 +25,21 @@ class CategoryField extends StatelessWidget {
     return Observer(
       builder: (_) {
         return ListTile(
-          title: createStore.category == null ? Text(
-            'Categoria *',
-            style: textStyleFont18,
-          ) : Text(
-            'Categoria *',
-            style: textStyleFont14,),
-          subtitle: createStore.category == null ? null :
-              Text('${createStore.category.description}',
-              style: TextStyle(color: Colors.black, fontSize: 17),),
+          title: createStore.category == null
+              ? Text(
+                  'Categoria *',
+                  style: textStyleFont18,
+                )
+              : Text(
+                  'Categoria *',
+                  style: textStyleFont14,
+                ),
+          subtitle: createStore.category == null
+              ? null
+              : Text(
+                  '${createStore.category.description}',
+                  style: TextStyle(color: Colors.black, fontSize: 17),
+                ),
           trailing: Icon(Icons.keyboard_arrow_down),
           onTap: () async {
             final category = await showDialog(

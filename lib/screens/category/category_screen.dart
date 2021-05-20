@@ -59,7 +59,7 @@ class CategoryScreen extends StatelessWidget {
                       },
                       child: Container(
                         height: 50,
-                        color: _validaESelecionaCategoria(category)
+                        color: _selecionaCategoriaEscolhida(category)
                             ? Colors.purple.withAlpha(50)
                             : null,
                         alignment: Alignment.center,
@@ -67,7 +67,7 @@ class CategoryScreen extends StatelessWidget {
                           category.description,
                           style: TextStyle(
                               color: Colors.grey[700],
-                              fontWeight: _validaESelecionaCategoria(category)
+                              fontWeight: _selecionaCategoriaEscolhida(category)
                                   ? FontWeight.bold
                                   : null),
                         ),
@@ -83,7 +83,7 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 
-  bool _validaESelecionaCategoria(Category category) {
+  bool _selecionaCategoriaEscolhida(Category category) {
     return category.id == selected?.id;
   }
 }
