@@ -16,8 +16,6 @@ void main() async {
   await initializeParse();
   setupLocators();
   runApp(MyApp());
-  
-  CepRepository().getEnderecoFromApi('89.050-230').then((value) => print(value));
 }
 
 void setupLocators() {

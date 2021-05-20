@@ -23,7 +23,7 @@ class CepRepository{
         try{
           final response = await Dio().get<Map>(endpoint);
           if(response.data.containsKey('erro') && response.data['erro']){
-            return Future.error('Cep inválido!');
+            return Future.error('Cep não existe');
           }else {
             final ufList = await IBGERepository().getUfListFromApiOrCache();
 
