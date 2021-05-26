@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
@@ -7,6 +8,7 @@ import 'package:xlo_mobx/stores/create_store.dart';
 
 import 'components/category_field.dart';
 import 'components/cep_field.dart';
+import 'components/hide_phone_field.dart';
 
 class CreateScreen extends StatelessWidget {
 
@@ -36,6 +38,7 @@ class CreateScreen extends StatelessWidget {
         elevation: 8,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
               ImagesField(createStore: createStore,),
@@ -70,6 +73,19 @@ class CreateScreen extends StatelessWidget {
                     centavos: true
                   )
                 ],
+              ),
+              HidePhoneField(createStore),
+              SizedBox(
+                height: 50,
+                child: RaisedButton(
+                  child: Text('Criar',
+                  style: TextStyle(fontSize: 25),),
+                  textColor: Colors.white,
+                  color: Colors.orange,
+                  disabledColor: Colors.orange.withAlpha(120),
+                  onPressed: (){},
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
               )
             ],
           ),
