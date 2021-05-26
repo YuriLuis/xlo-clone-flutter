@@ -122,7 +122,10 @@ class LoginScreen extends StatelessWidget {
                               : Text('ENTRAR'),
                           textColor: Colors.white,
                           elevation: 0,
-                          onPressed: loginStore.loginPressed,
+                          onPressed: (){
+                            loginStore.loginPressed();
+                            Navigator.of(context).pop();
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                         ),

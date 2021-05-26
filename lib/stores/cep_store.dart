@@ -10,7 +10,7 @@ abstract class _CepStore with Store{
 
   _CepStore(){
     autorun((_){
-      if(cep.length != 8){
+      if(clearCep.length != 8){
         _resetEndereco();
       }else {
         _searchCep();
@@ -18,8 +18,9 @@ abstract class _CepStore with Store{
     });
   }
 
+  ///*Para não dar erro de variavel nulla
   @observable
-  String cep;
+  String cep = '';
 
   @observable
   Endereco endereco;

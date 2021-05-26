@@ -14,9 +14,8 @@ class CepRepository{
       return Future.error('Cep inválido!');
     }else {
       final clearCep = cep.replaceAll(RegExp('[^0-9]'), '');
-      // ignore: unrelated_type_equality_checks
       if(clearCep.length != 8){
-        Future.error('Cep inválido!');
+        Future.error(' length != 8 trueCep inválido!');
       }else {
         final endpoint = 'https://viacep.com.br/ws/$clearCep/json/';
 
@@ -42,6 +41,6 @@ class CepRepository{
   }
   
   bool isCepInvalido(String cep){
-    return cep.isEmpty || cep == null;
+    return cep.isEmpty || cep == null && cep.length != 8;
   }
 }
