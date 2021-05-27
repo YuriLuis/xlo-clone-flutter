@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
+import 'package:xlo_mobx/stores/create_store.dart';
 
 class CepField extends StatelessWidget {
-  final cepStore = CepStore();
+  CepField(this.createStore) : cepStore = createStore.cepStore;
+
+  final CreateStore createStore;
+  final CepStore cepStore;
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +18,24 @@ class CepField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Observer(
-          builder: (_){
-            return TextFormField(
-              onChanged: cepStore.setCep,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CepInputFormatter(),
-              ],
-              decoration: InputDecoration(
-                  labelText: 'CEP *',
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: Colors.grey,
-                      fontSize: 18),
-                  contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10)),
-            );
-          },
+            builder: (_) {
+              return TextFormField(
+                onChanged: cepStore.setCep,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CepInputFormatter(),
+                ],
+                decoration: InputDecoration(
+                    errorText: createStore.enderecoError,
+                    labelText: 'CEP *',
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey,
+                        fontSize: 18),
+                    contentPadding: EdgeInsets.fromLTRB(16, 10, 12, 10)),
+              );
+            },
         ),
         Observer(
           // ignore: missing_return
@@ -39,8 +44,7 @@ class CepField extends StatelessWidget {
                 cepStore.error == null &&
                 !cepStore.loading) {
               return Container();
-            } else if (cepStore.endereco == null &&
-                cepStore.error == null) {
+            } else if (cepStore.endereco == null && cepStore.error == null) {
               return LinearProgressIndicator(
                 valueColor: AlwaysStoppedAnimation(Colors.purple),
                 backgroundColor: Colors.transparent,
@@ -53,8 +57,8 @@ class CepField extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   cepStore.error,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: Colors.red),
+                  style:
+                  TextStyle(fontWeight: FontWeight.w600, color: Colors.red),
                 ),
               );
             } else {

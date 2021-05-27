@@ -101,7 +101,7 @@ class ImagesField extends StatelessWidget {
           builder: (_){
             if(createStore.imagesError != null)
              return Container(
-                padding: EdgeInsets.fromLTRB(16, 6, 8, 8),
+                padding: EdgeInsets.fromLTRB(16, 6, 8, 0),
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.red))),
                 child: Text(createStore.imagesError,

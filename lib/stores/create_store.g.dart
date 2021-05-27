@@ -30,36 +30,26 @@ mixin _$CreateStore on _CreateStore, Store {
       (_$descricaoValidComputed ??= Computed<bool>(() => super.descricaoValid,
               name: '_CreateStore.descricaoValid'))
           .value;
-
-  final _$hidePhoneAtom = Atom(name: '_CreateStore.hidePhone');
-
-  @override
-  bool get hidePhone {
-    _$hidePhoneAtom.reportRead();
-    return super.hidePhone;
-  }
+  Computed<bool> _$categoryValidComputed;
 
   @override
-  set hidePhone(bool value) {
-    _$hidePhoneAtom.reportWrite(value, super.hidePhone, () {
-      super.hidePhone = value;
-    });
-  }
-
-  final _$categoryAtom = Atom(name: '_CreateStore.category');
+  bool get categoryValid =>
+      (_$categoryValidComputed ??= Computed<bool>(() => super.categoryValid,
+              name: '_CreateStore.categoryValid'))
+          .value;
+  Computed<Endereco> _$enderecoComputed;
 
   @override
-  Category get category {
-    _$categoryAtom.reportRead();
-    return super.category;
-  }
+  Endereco get endereco =>
+      (_$enderecoComputed ??= Computed<Endereco>(() => super.endereco,
+              name: '_CreateStore.endereco'))
+          .value;
+  Computed<num> _$priceComputed;
 
   @override
-  set category(Category value) {
-    _$categoryAtom.reportWrite(value, super.category, () {
-      super.category = value;
-    });
-  }
+  num get price => (_$priceComputed ??=
+          Computed<num>(() => super.price, name: '_CreateStore.price'))
+      .value;
 
   final _$titleAtom = Atom(name: '_CreateStore.title');
 
@@ -91,29 +81,52 @@ mixin _$CreateStore on _CreateStore, Store {
     });
   }
 
+  final _$categoryAtom = Atom(name: '_CreateStore.category');
+
+  @override
+  Category get category {
+    _$categoryAtom.reportRead();
+    return super.category;
+  }
+
+  @override
+  set category(Category value) {
+    _$categoryAtom.reportWrite(value, super.category, () {
+      super.category = value;
+    });
+  }
+
+  final _$hidePhoneAtom = Atom(name: '_CreateStore.hidePhone');
+
+  @override
+  bool get hidePhone {
+    _$hidePhoneAtom.reportRead();
+    return super.hidePhone;
+  }
+
+  @override
+  set hidePhone(bool value) {
+    _$hidePhoneAtom.reportWrite(value, super.hidePhone, () {
+      super.hidePhone = value;
+    });
+  }
+
+  final _$precoTextAtom = Atom(name: '_CreateStore.precoText');
+
+  @override
+  String get precoText {
+    _$precoTextAtom.reportRead();
+    return super.precoText;
+  }
+
+  @override
+  set precoText(String value) {
+    _$precoTextAtom.reportWrite(value, super.precoText, () {
+      super.precoText = value;
+    });
+  }
+
   final _$_CreateStoreActionController = ActionController(name: '_CreateStore');
-
-  @override
-  void setCategory(Category value) {
-    final _$actionInfo = _$_CreateStoreActionController.startAction(
-        name: '_CreateStore.setCategory');
-    try {
-      return super.setCategory(value);
-    } finally {
-      _$_CreateStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setHidePhone(bool value) {
-    final _$actionInfo = _$_CreateStoreActionController.startAction(
-        name: '_CreateStore.setHidePhone');
-    try {
-      return super.setHidePhone(value);
-    } finally {
-      _$_CreateStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setTitle(String value) {
@@ -138,15 +151,52 @@ mixin _$CreateStore on _CreateStore, Store {
   }
 
   @override
+  void setCategory(Category value) {
+    final _$actionInfo = _$_CreateStoreActionController.startAction(
+        name: '_CreateStore.setCategory');
+    try {
+      return super.setCategory(value);
+    } finally {
+      _$_CreateStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setHidePhone(bool value) {
+    final _$actionInfo = _$_CreateStoreActionController.startAction(
+        name: '_CreateStore.setHidePhone');
+    try {
+      return super.setHidePhone(value);
+    } finally {
+      _$_CreateStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPreco(String value) {
+    final _$actionInfo = _$_CreateStoreActionController.startAction(
+        name: '_CreateStore.setPreco');
+    try {
+      return super.setPreco(value);
+    } finally {
+      _$_CreateStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-hidePhone: ${hidePhone},
-category: ${category},
 title: ${title},
 descricao: ${descricao},
+category: ${category},
+hidePhone: ${hidePhone},
+precoText: ${precoText},
 imagesValid: ${imagesValid},
 titleValid: ${titleValid},
-descricaoValid: ${descricaoValid}
+descricaoValid: ${descricaoValid},
+categoryValid: ${categoryValid},
+endereco: ${endereco},
+price: ${price}
     ''';
   }
 }

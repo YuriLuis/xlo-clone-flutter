@@ -63,8 +63,8 @@ class CreateScreen extends StatelessWidget {
                       decoration: InputDecoration(
                           contentPadding: contentPadding,
                           labelText: 'Descrição *',
-                          labelStyle: labelStyle ,
-                      errorText: createStore.descricaoError),
+                          labelStyle: labelStyle,
+                          errorText: createStore.descricaoError),
                       maxLines: null,
                     );
                   },
@@ -72,20 +72,23 @@ class CreateScreen extends StatelessWidget {
                 CategoryField(
                   createStore: createStore,
                 ),
-                CepField(),
-                TextFormField(
-                  decoration: InputDecoration(
-                    contentPadding: contentPadding,
-                    labelText: 'Preço *',
-                    labelStyle: labelStyle,
-                    prefixText: 'R\$ ',
-                  ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    RealInputFormatter(centavos: true)
-                  ],
-                ),
+                CepField(createStore),
+                Observer(builder: (_) {
+                  return TextFormField(
+                    onChanged: createStore.setPreco,
+                    decoration: InputDecoration(
+                        contentPadding: contentPadding,
+                        labelText: 'Preço *',
+                        labelStyle: labelStyle,
+                        prefixText: 'R\$ ',
+                        errorText: createStore.precoError),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      RealInputFormatter(centavos: true)
+                    ],
+                  );
+                }),
                 HidePhoneField(createStore),
                 SizedBox(
                   height: 50,
