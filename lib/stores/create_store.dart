@@ -1,7 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:xlo_mobx/model/category.dart';
 import 'package:xlo_mobx/model/endereco.dart';
+import 'package:xlo_mobx/repositories/anuncio_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
+import 'package:xlo_mobx/stores/user_manager_store.dart';
 
 part 'create_store.g.dart';
 
@@ -129,7 +134,8 @@ abstract class _CreateStore with Store{
   Function get sendPressed => formValid ? _send : null;
 
   void _send(){
-
+    Anuncio anuncio = createAnuncio();
+    AnuncioRepository().save(anuncio);
   }
 
   @observable
@@ -137,4 +143,17 @@ abstract class _CreateStore with Store{
 
   @action
   void invalidSendPressed() => showErrors = true;
+
+  Anuncio createAnuncio(){
+    final a = Anuncio();
+    a.title = title;
+    a.description = descricao;
+    a.category = category;
+    a.price = price;
+    a.hidePhone = hidePhone;
+    a.images = images;
+    a.address = endereco;
+    a.user = GetIt.I<UserManagerStore>().user;
+    return a;
+  }
 }
