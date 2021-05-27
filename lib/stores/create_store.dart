@@ -15,7 +15,7 @@ abstract class _CreateStore with Store{
   bool get imagesValid => images.isNotEmpty;
 
   String get imagesError {
-    if(imagesValid){
+    if(!showErrors || imagesValid){
       return null;
     }else {
       return 'Insira uma imagem!';
@@ -31,7 +31,7 @@ abstract class _CreateStore with Store{
   @computed
   bool get titleValid => title.length >6;
   String get titleError {
-    if (titleValid) {
+    if (!showErrors || titleValid) {
       return null;
     } else if (title.isEmpty) {
       return 'Campo obrigatório';
@@ -49,7 +49,7 @@ abstract class _CreateStore with Store{
   @computed
   bool get descricaoValid => descricao.length >=10;
   String get descricaoError {
-    if (descricaoValid) {
+    if (!showErrors || descricaoValid) {
       return null;
     } else if (descricao.isEmpty) {
       return 'Campo obrigatório';
@@ -67,7 +67,7 @@ abstract class _CreateStore with Store{
   @computed
   bool get categoryValid => category != null;
   String get categoryError {
-    if(categoryValid){
+    if(!showErrors || categoryValid){
       return null;
     }else {
       return 'Campo Obrigatório!';
@@ -88,7 +88,7 @@ abstract class _CreateStore with Store{
   bool get enderecoValid => endereco != null;
 
   String get enderecoError{
-    if(enderecoValid){
+    if(!showErrors || enderecoValid){
       return null;
     }else {
       return 'Campo Obrigatório';
@@ -113,7 +113,7 @@ abstract class _CreateStore with Store{
   bool get precoValid => price != null && price <= 9999999;
 
   String get precoError {
-    if(precoValid){
+    if(!showErrors || precoValid){
       return null;
     }else if(precoText.isEmpty) {
       return 'Campo Obrigatório';
@@ -121,4 +121,20 @@ abstract class _CreateStore with Store{
       return 'Preço invalido';
     }
   }
+
+  @computed
+  bool get formValid => imagesValid && titleValid && descricaoValid
+      && categoryValid && enderecoValid && precoValid;
+
+  Function get sendPressed => formValid ? _send : null;
+
+  void _send(){
+
+  }
+
+  @observable
+  bool showErrors = false;
+
+  @action
+  void invalidSendPressed() => showErrors = true;
 }

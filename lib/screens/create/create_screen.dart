@@ -90,20 +90,25 @@ class CreateScreen extends StatelessWidget {
                   );
                 }),
                 HidePhoneField(createStore),
-                SizedBox(
-                  height: 50,
-                  child: RaisedButton(
-                    child: Text(
-                      'Criar',
-                      style: TextStyle(fontSize: 25),
+                Observer(builder: (_) {
+                  return SizedBox(
+                    height: 50,
+                    child: GestureDetector(
+                      onTap: createStore.invalidSendPressed,
+                      child: RaisedButton(
+                        child: Text(
+                          'Criar',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                        textColor: Colors.white,
+                        color: Colors.orange,
+                        disabledColor: Colors.orange.withAlpha(120),
+                        onPressed: createStore.sendPressed,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                     ),
-                    textColor: Colors.white,
-                    color: Colors.orange,
-                    disabledColor: Colors.orange.withAlpha(120),
-                    onPressed: () {},
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                )
+                  );
+                })
               ],
             ),
           ),
