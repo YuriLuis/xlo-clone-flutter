@@ -4,12 +4,13 @@ import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 
 class UserRepository {
+
   Future<User> signUp(User user) async {
     final parseUser = ParseUser(user.email, user.password, user.email);
 
-    parseUser.set<String>(KeyUserName, user.name);
-    parseUser.set<String>(KeyUserPhone, user.phone);
-    parseUser.set<int>(KeyUserType, user.userType.index);
+    parseUser.set<String>(keyUserName, user.name);
+    parseUser.set<String>(keyUserPhone, user.phone);
+    parseUser.set<int>(keyUserType, user.userType.index);
 
     final response = await parseUser.signUp();
 
@@ -23,11 +24,11 @@ class UserRepository {
   User mapParseToUser(ParseUser parseUser) {
     return User(
         id: parseUser.objectId,
-        name: parseUser.get(KeyUserName),
-        email: parseUser.get(KeyUserEmail),
-        phone: parseUser.get(KeyUserPhone),
-        userType: UserType.values[parseUser.get(KeyUserType)],
-        createdAt: parseUser.get(KeyUserCreatedAt));
+        name: parseUser.get(keyUserName),
+        email: parseUser.get(keyUserEmail),
+        phone: parseUser.get(keyUserPhone),
+        userType: UserType.values[parseUser.get(keyUserType)],
+        createdAt: parseUser.get(keyUserCreatedAt));
   }
 
   Future<User> loginWithEmail(String email, String password) async {
@@ -45,7 +46,6 @@ class UserRepository {
     if (parseUser != null) {
       final response =
           await ParseUser.getCurrentUserFromServer(parseUser.sessionToken);
-
       if(response.success){
         return mapParseToUser(response.result);
       }else {
