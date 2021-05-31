@@ -9,24 +9,32 @@ import 'package:xlo_mobx/repositories/table_keys.dart';
 
 class AnuncioRepository {
   Future<void> save(Anuncio anuncio) async {
-    final parseImages = await _saveImages(anuncio.images);
 
-    final parseUser = ParseUser('', '', '')..set(keyUserId, anuncio.user.id);
+    try{
+      final parseImages = await _saveImages(anuncio.images);
 
-    final anuncioObject = ParseObject(keyAnuncioTable);
+      final parseUser = ParseUser('', '', '')..set(keyUserId, anuncio.user.id);
 
-    final parseAcl = ParseACL(owner: parseUser);
-    parseAcl.setPublicReadAccess(allowed: true);
-    parseAcl.setPublicWriteAccess(allowed: false);
-    anuncioObject.setACL(parseAcl);
+      final anuncioObject = ParseObject(keyAnuncioTable);
 
-    _setDataInAnuncio(anuncioObject, anuncio, parseImages, parseUser);
+      final parseAcl = ParseACL(owner: parseUser);
+      parseAcl.setPublicReadAccess(allowed: true);
+      parseAcl.setPublicWriteAccess(allowed: false);
+      anuncioObject.setACL(parseAcl);
 
-    ///Salva no parse!
-    final response = await anuncioObject.save();
-    if(response.success){
+      _setDataInAnuncio(anuncioObject, anuncio, parseImages, parseUser);
 
+      ///Salva no parse!
+      final response = await anuncioObject.save();
+      if(response.success){
+        return response.result;
+      }else {
+        return Future.error(ParseErrors.getDescription(response.error.code));
+      }
+    }catch(e){
+      return Future.error('Falha ao salvar anúncio');
     }
+
   }
 
   void _setDataInAnuncio(ParseObject parseObject, Anuncio anuncio,

@@ -133,13 +133,26 @@ abstract class _CreateStore with Store{
 
   Function get sendPressed => formValid ? _send : null;
 
-  void _send(){
+  @action
+  Future<void> _send() async {
+    loading = true;
     Anuncio anuncio = createAnuncio();
-    AnuncioRepository().save(anuncio);
+    try{
+      final response = await AnuncioRepository().save(anuncio);
+    }catch(e){
+      error = e;
+    }
+    loading = false;
   }
 
   @observable
+  String error = '';
+
+  @observable
   bool showErrors = false;
+
+  @observable
+  bool loading = false;
 
   @action
   void invalidSendPressed() => showErrors = true;
