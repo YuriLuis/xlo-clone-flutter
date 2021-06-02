@@ -138,7 +138,8 @@ abstract class _CreateStore with Store{
     loading = true;
     Anuncio anuncio = createAnuncio();
     try{
-      savedAnuncio = await AnuncioRepository().save(anuncio);
+      await AnuncioRepository().save(anuncio);
+      savedAnuncio = true;
     }catch(e){
       error = e;
     }
@@ -171,6 +172,6 @@ abstract class _CreateStore with Store{
   }
 
   @observable
-  Anuncio savedAnuncio;
+  bool savedAnuncio = false;
 
 }

@@ -29,7 +29,7 @@ class _CreateScreenState extends State<CreateScreen> {
   void initState() {
     super.initState();
     ///When não precisa dar dispose!
-    when((_) => createStore.savedAnuncio != null, (){
+    when((_) => createStore.savedAnuncio, (){
       GetIt.I<PageStore>().setPage(0);
     });
   }

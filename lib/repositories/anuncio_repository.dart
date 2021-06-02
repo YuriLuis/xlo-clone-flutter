@@ -8,7 +8,7 @@ import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 
 class AnuncioRepository {
-  Future<Anuncio> save(Anuncio anuncio) async {
+  Future<void> save(Anuncio anuncio) async {
 
     try{
       final parseImages = await _saveImages(anuncio.images);
@@ -26,9 +26,7 @@ class AnuncioRepository {
 
       ///Salva no parse!
       final response = await anuncioObject.save();
-      if(response.success){
-        return Anuncio.fromParse(response.result);
-      }else {
+      if(!response.success){
         return Future.error(ParseErrors.getDescription(response.error.code));
       }
     }catch(e){
