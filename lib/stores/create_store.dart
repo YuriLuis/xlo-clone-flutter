@@ -138,7 +138,7 @@ abstract class _CreateStore with Store{
     loading = true;
     Anuncio anuncio = createAnuncio();
     try{
-      final response = await AnuncioRepository().save(anuncio);
+      savedAnuncio = await AnuncioRepository().save(anuncio);
     }catch(e){
       error = e;
     }
@@ -169,4 +169,8 @@ abstract class _CreateStore with Store{
     a.user = GetIt.I<UserManagerStore>().user;
     return a;
   }
+
+  @observable
+  Anuncio savedAnuncio;
+
 }
