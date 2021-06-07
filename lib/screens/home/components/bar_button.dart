@@ -20,7 +20,7 @@ class BarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: (){},
+        onTap: onTap,
         child: Container(
           decoration: boxDecoration,
           alignment: Alignment.center,
