@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/screens/category/category_screen.dart';
+import 'package:xlo_mobx/screens/filtro/filter_screen.dart';
 import 'package:xlo_mobx/stores/home_store.dart';
 
 import 'bar_button.dart';
@@ -40,7 +41,8 @@ class TopBar extends StatelessWidget {
                   bottom: BorderSide(color: Colors.grey[400]),
                   left: BorderSide(color: Colors.grey[400]))),
           onTap: () {
-            print('onTap Filtros');
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => FiltroScreen()));
           },
         ),
       ],
