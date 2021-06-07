@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:xlo_mobx/stores/filter_store.dart';
 
 import 'components/order_by_field.dart';
 
 class FiltroScreen extends StatelessWidget {
-  const FiltroScreen({Key key}) : super(key: key);
+
+  final FilterStore filterStore = FilterStore();
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,9 @@ class FiltroScreen extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                OrderByField(),
+                OrderByField(filterStore),
               ],
             ),
           ),
