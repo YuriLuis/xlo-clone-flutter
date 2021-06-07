@@ -44,10 +44,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Colors.purple,
+          accentColor: Colors.purple,
+          disabledColor: Colors.purple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.purple,
           appBarTheme: AppBarTheme(elevation: 0),
-          cursorColor: Colors.purple),
+          textSelectionTheme:
+              TextSelectionThemeData(cursorColor: Colors.orange)),
       home: BaseScreen(),
     );
   }

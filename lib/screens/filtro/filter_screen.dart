@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xlo_mobx/stores/filter_store.dart';
 
 import 'components/order_by_field.dart';
+import 'components/price_range_field.dart';
 
 class FiltroScreen extends StatelessWidget {
 
@@ -27,6 +28,7 @@ class FiltroScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 OrderByField(filterStore),
+                PriceRangeField(filterStore),
               ],
             ),
           ),
