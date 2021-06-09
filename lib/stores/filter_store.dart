@@ -4,6 +4,9 @@ part 'filter_store.g.dart';
 
 enum OrderBy { DATE , PRICE}
 
+const VENDOR_TYPE_PARTICULAR = 0 << 0;
+const VENDOR_TYPE_PROFISSIONAL = 1 << 1;
+
 class FilterStore = _FilterStore with _$FilterStore;
 
 abstract class _FilterStore with Store{
@@ -29,5 +32,17 @@ abstract class _FilterStore with Store{
   @computed
   String get priceError => maxPrice != null && minPrice != null
       && maxPrice < minPrice ? 'Faixa de preço inválida' : null;
+
+  @observable
+  int vendorType = 0;
+
+  @computed
+  bool get isTypeParticular => (vendorType & VENDOR_TYPE_PARTICULAR) != 0;
+  bool get isTypeProfissional => (vendorType & VENDOR_TYPE_PROFISSIONAL) != 0;
+
+  @action
+  void selectVendorType(int value) => vendorType = value;
+  void setVendorType(int type) => vendorType = vendorType | type;
+  void resetVendorType(int type) => vendorType = vendorType & ~type;
 
 }

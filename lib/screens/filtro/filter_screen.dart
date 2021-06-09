@@ -3,6 +3,7 @@ import 'package:xlo_mobx/stores/filter_store.dart';
 
 import 'components/order_by_field.dart';
 import 'components/price_range_field.dart';
+import 'components/vendor_type_field.dart';
 
 class FiltroScreen extends StatelessWidget {
 
@@ -29,6 +30,7 @@ class FiltroScreen extends StatelessWidget {
               children: [
                 OrderByField(filterStore),
                 PriceRangeField(filterStore),
+                VendorTypeField(filterStore),
               ],
             ),
           ),

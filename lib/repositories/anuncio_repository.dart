@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:path/path.dart' as path;
-import 'package:xlo_mobx/model/category.dart';
 import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 

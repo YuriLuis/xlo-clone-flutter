@@ -134,6 +134,7 @@ class _CreateScreenState extends State<CreateScreen> {
                           height: 50,
                           child: GestureDetector(
                             onTap: createStore.invalidSendPressed,
+                            // ignore: deprecated_member_use
                             child: RaisedButton(
                               child: Text(
                                 'Criar',

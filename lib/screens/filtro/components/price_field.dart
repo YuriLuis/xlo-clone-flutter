@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,17 +9,20 @@ class PriceField extends StatelessWidget {
   final String label;
   final Function(int) onChanged;
   final int initialValue;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: TextFormField(
         decoration: InputDecoration(
-          focusColor: Colors.purple,
-          prefixText: 'R\$ ',
-          border: OutlineInputBorder(),
-          isDense: true,
-          labelText: label,
-        ),
+            prefixText: 'R\$ ',
+            hintStyle: TextStyle(color: Colors.purple),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.purple)),
+            border: OutlineInputBorder(),
+            isDense: true,
+            labelText: label,
+            labelStyle: TextStyle(color: Colors.grey[700])),
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           RealInputFormatter(centavos: false)

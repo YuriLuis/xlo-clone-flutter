@@ -9,6 +9,7 @@ import 'ibge_repository.dart';
 
 class CepRepository{
 
+  // ignore: missing_return
   Future<Endereco> getEnderecoFromApi(String cep) async {
     if(isCepInvalido(cep)){
       return Future.error('Cep inválido!');

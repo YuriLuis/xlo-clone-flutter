@@ -19,7 +19,9 @@ class ImagesSourceDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // ignore: deprecated_member_use
             FlatButton(onPressed: getFromCamera, child: Text('Câmera')),
+            // ignore: deprecated_member_use
             FlatButton(onPressed: getFromGallery, child: Text('Galeria')),
           ],
         ),
