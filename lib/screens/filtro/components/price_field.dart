@@ -16,7 +16,6 @@ class PriceField extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
             prefixText: 'R\$ ',
-            hintStyle: TextStyle(color: Colors.purple),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.purple)),
             border: OutlineInputBorder(),

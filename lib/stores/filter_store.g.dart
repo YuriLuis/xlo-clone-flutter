@@ -69,18 +69,36 @@ mixin _$FilterStore on _FilterStore, Store {
     });
   }
 
-  final _$vendorTypeAtom = Atom(name: '_FilterStore.vendorType');
+  final _$isParticularVendorAtom =
+      Atom(name: '_FilterStore.isParticularVendor');
 
   @override
-  int get vendorType {
-    _$vendorTypeAtom.reportRead();
-    return super.vendorType;
+  bool get isParticularVendor {
+    _$isParticularVendorAtom.reportRead();
+    return super.isParticularVendor;
   }
 
   @override
-  set vendorType(int value) {
-    _$vendorTypeAtom.reportWrite(value, super.vendorType, () {
-      super.vendorType = value;
+  set isParticularVendor(bool value) {
+    _$isParticularVendorAtom.reportWrite(value, super.isParticularVendor, () {
+      super.isParticularVendor = value;
+    });
+  }
+
+  final _$isProfissionalVendorAtom =
+      Atom(name: '_FilterStore.isProfissionalVendor');
+
+  @override
+  bool get isProfissionalVendor {
+    _$isProfissionalVendorAtom.reportRead();
+    return super.isProfissionalVendor;
+  }
+
+  @override
+  set isProfissionalVendor(bool value) {
+    _$isProfissionalVendorAtom.reportWrite(value, super.isProfissionalVendor,
+        () {
+      super.isProfissionalVendor = value;
     });
   }
 
@@ -120,11 +138,11 @@ mixin _$FilterStore on _FilterStore, Store {
   }
 
   @override
-  void selectVendorType(int value) {
+  void setParticularVendor() {
     final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.selectVendorType');
+        name: '_FilterStore.setParticularVendor');
     try {
-      return super.selectVendorType(value);
+      return super.setParticularVendor();
     } finally {
       _$_FilterStoreActionController.endAction(_$actionInfo);
     }
@@ -136,7 +154,8 @@ mixin _$FilterStore on _FilterStore, Store {
 orderBy: ${orderBy},
 minPrice: ${minPrice},
 maxPrice: ${maxPrice},
-vendorType: ${vendorType},
+isParticularVendor: ${isParticularVendor},
+isProfissionalVendor: ${isProfissionalVendor},
 priceError: ${priceError},
 isTypeParticular: ${isTypeParticular}
     ''';
