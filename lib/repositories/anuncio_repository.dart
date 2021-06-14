@@ -3,13 +3,37 @@ import 'dart:io';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:path/path.dart' as path;
+import 'package:xlo_mobx/model/category.dart';
 import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
+import 'package:xlo_mobx/stores/filter_store.dart';
 
 class AnuncioRepository {
-  Future<void> save(Anuncio anuncio) async {
+  Future<List<Anuncio>> getHomeAnuncioList(
+      {FilterStore filterStore, String search, Category category}) {
+    final queryBuilder =
+        QueryBuilder<ParseObject>(ParseObject(keyAnuncioTable));
 
-    try{
+    ///traz sempre de 20 em 20 anuncios.
+    queryBuilder.setLimit(20);
+
+    ///Somente anuncios ativos.
+    queryBuilder.whereEqualTo(keyAnuncioStatus, AnuncioStatus.ACTIVE.index);
+    if (search != null && search.trim().isNotEmpty) {
+      queryBuilder.whereContains(keyAnuncioTitle, search, caseSensitive: false);
+    }
+
+    // ignore: unrelated_type_equality_checks
+    if (category != null && category != '*') {
+      queryBuilder.whereEqualTo(
+          keyAnuncioCategory,
+          (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
+              .toPointer());
+    }
+  }
+
+  Future<void> save(Anuncio anuncio) async {
+    try {
       final parseImages = await _saveImages(anuncio.images);
 
       final parseUser = ParseUser('', '', '')..set(keyUserId, anuncio.user.id);
@@ -25,13 +49,12 @@ class AnuncioRepository {
 
       ///Salva no parse!
       final response = await anuncioObject.save();
-      if(!response.success){
+      if (!response.success) {
         return Future.error(ParseErrors.getDescription(response.error.code));
       }
-    }catch(e){
+    } catch (e) {
       return Future.error('Falha ao salvar anúncio');
     }
-
   }
 
   void _setDataInAnuncio(ParseObject parseObject, Anuncio anuncio,
