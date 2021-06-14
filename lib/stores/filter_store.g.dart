@@ -69,6 +69,21 @@ mixin _$FilterStore on _FilterStore, Store {
     });
   }
 
+  final _$vendorTypeAtom = Atom(name: '_FilterStore.vendorType');
+
+  @override
+  int get vendorType {
+    _$vendorTypeAtom.reportRead();
+    return super.vendorType;
+  }
+
+  @override
+  set vendorType(int value) {
+    _$vendorTypeAtom.reportWrite(value, super.vendorType, () {
+      super.vendorType = value;
+    });
+  }
+
   final _$isParticularVendorAtom =
       Atom(name: '_FilterStore.isParticularVendor');
 
@@ -154,6 +169,7 @@ mixin _$FilterStore on _FilterStore, Store {
 orderBy: ${orderBy},
 minPrice: ${minPrice},
 maxPrice: ${maxPrice},
+vendorType: ${vendorType},
 isParticularVendor: ${isParticularVendor},
 isProfissionalVendor: ${isProfissionalVendor},
 priceError: ${priceError},

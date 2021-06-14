@@ -96,10 +96,10 @@ class VendorTypeField extends StatelessWidget {
   Widget _widgetTextErroTypeVendor(){
     return Observer(
       builder: (_) {
-        if(filterStore.isTypeVenderError != null){
+        if(filterStore.isTypeVendorError != null){
           return Container(
             padding: EdgeInsets.only(top: 8),
-            child: Text(filterStore.isTypeVenderError,
+            child: Text(filterStore.isTypeVendorError,
               style: TextStyle(color: Colors.red, fontSize: 14),),
           );
         }else {
