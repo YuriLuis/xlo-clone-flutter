@@ -12,7 +12,6 @@ class IBGERepository {
     final preferences = await SharedPreferences.getInstance();
 
     if (preferences.containsKey(keyEstados)) {
-      print('Pegou dados do SharedPreferences');
       final jsonEstados = json.decode(preferences.get(keyEstados));
 
       return jsonEstados
@@ -21,8 +20,6 @@ class IBGERepository {
             ..sort((Estado a, Estado b) =>
                 a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
     }
-
-    print('Não Pegou dados do SharedPreferences');
 
     const endpoint =
         'https://servicodados.ibge.gov.br/api/v1/localidades/estados';

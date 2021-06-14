@@ -1,19 +1,22 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:path/path.dart' as path;
 import 'package:xlo_mobx/model/category.dart';
+import 'package:xlo_mobx/model/user.dart';
 import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 import 'package:xlo_mobx/stores/filter_store.dart';
 
 class AnuncioRepository {
   Future<List<Anuncio>> getHomeAnuncioList(
-      {FilterStore filterStore, String search, Category category}) {
+      {FilterStore filterStore, String search, Category category}) async {
     final queryBuilder =
         QueryBuilder<ParseObject>(ParseObject(keyAnuncioTable));
-
+    
+    queryBuilder.includeObject([keyAnuncioOwner, keyAnuncioCategory]);
     ///traz sempre de 20 em 20 anuncios.
     queryBuilder.setLimit(20);
 
@@ -29,6 +32,49 @@ class AnuncioRepository {
           keyAnuncioCategory,
           (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
               .toPointer());
+    }
+
+    switch (filterStore.orderBy) {
+      case OrderBy.PRICE:
+        queryBuilder.orderByAscending(keyAnuncioPrice);
+        break;
+      case OrderBy.DATE:
+        queryBuilder.orderByDescending(keyAnuncioCreatedAt);
+        break;
+      default:
+        queryBuilder.orderByDescending(keyAnuncioCreatedAt);
+        break;
+    }
+
+    if (filterStore.minPrice != null && filterStore.minPrice > 0) {
+      queryBuilder.whereGreaterThanOrEqualsTo(
+          keyAnuncioPrice, filterStore.minPrice);
+    }
+
+    if (filterStore.maxPrice != null && filterStore.maxPrice > 0) {
+      queryBuilder.whereLessThanOrEqualTo(
+          keyAnuncioPrice, filterStore.maxPrice);
+    }
+
+    final userQuery = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    if (filterStore.isTypeParticular) {
+      userQuery.whereEqualTo(keyUserType, UserType.PARTICULAR.index);
+    }
+    if (filterStore.isTypeProfissional) {
+      userQuery.whereEqualTo(keyUserType, UserType.PROFISSIONAL.index);
+    }
+
+    queryBuilder.whereMatchesQuery(keyAnuncioOwner, userQuery);
+
+    final response = await queryBuilder.query();
+    if (response.success && response.results != null) {
+      return response.results
+          .map((parseObject) => Anuncio.fromParse(parseObject))
+          .toList();
+    }else if(response.success && response.results == null){
+      return [];
+    }else {
+      return Future.error(ParseErrors.getDescription(response.error.code));
     }
   }
 
