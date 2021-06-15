@@ -8,7 +8,10 @@ class CategoryStore = _CategoryStore with _$CategoryStore;
 
 abstract class _CategoryStore with Store {
   _CategoryStore() {
-    _loadCategories();
+    autorun((_) {
+      if (categoryList.isEmpty)
+        _loadCategories();
+    });
   }
 
   ObservableList<Category> categoryList = ObservableList<Category>();

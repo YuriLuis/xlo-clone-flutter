@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
+import 'package:xlo_mobx/helpers/extensions.dart';
 
 class AnuncioTile extends StatelessWidget {
   AnuncioTile({this.anuncio});
@@ -36,10 +37,10 @@ class AnuncioTile extends StatelessWidget {
                     children: [
                       Text(anuncio.title,
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-                      Text('R\$: ${anuncio.price.toStringAsFixed(2)}',
+                      Text('${anuncio.price.formattedMoney()}',
                           style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700)),
                       Text(
-                        '${anuncio.created} - '
+                        '${anuncio.created.formattedDate()} - '
                         '${anuncio.address.cidade.nome} - '
                         '${anuncio.address.estado.sigla}',
                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),

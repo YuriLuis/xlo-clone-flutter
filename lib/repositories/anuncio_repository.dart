@@ -27,7 +27,7 @@ class AnuncioRepository {
     }
 
     // ignore: unrelated_type_equality_checks
-    if (category != null && category != '*') {
+    if (category != null && category.id != '*') {
       queryBuilder.whereEqualTo(
           keyAnuncioCategory,
           (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
