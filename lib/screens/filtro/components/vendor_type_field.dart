@@ -11,65 +11,6 @@ class VendorTypeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _particularButton() {
-      return GestureDetector(
-        onTap: () {
-          _clickButtonParticular();
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          alignment: Alignment.center,
-          height: 50,
-          width: 140,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: filterStore.isTypeParticular
-                  ? Colors.purple
-                  : Colors.transparent,
-              border: Border.all(
-                  color: filterStore.isTypeParticular
-                      ? Colors.purple
-                      : Colors.grey[700])),
-          child: Text(
-            'Particular',
-            style: TextStyle(
-                color:
-                    filterStore.isTypeParticular ? Colors.white : Colors.black),
-          ),
-        ),
-      );
-    }
-
-    Widget _profissionalButton() {
-      return GestureDetector(
-        onTap: () {
-          _clickButtonProfissional();
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          alignment: Alignment.center,
-          height: 50,
-          width: 140,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: filterStore.isTypeProfissional
-                  ? Colors.purple
-                  : Colors.transparent,
-              border: Border.all(
-                  color: filterStore.isTypeProfissional
-                      ? Colors.purple
-                      : Colors.grey[700])),
-          child: Text(
-            'Profissional',
-            style: TextStyle(
-                color: filterStore.isTypeProfissional
-                    ? Colors.white
-                    : Colors.black),
-          ),
-        ),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -77,6 +18,7 @@ class VendorTypeField extends StatelessWidget {
         Observer(
           builder: (_) {
             return Wrap(
+              alignment: WrapAlignment.start,
               runSpacing: 4,
               children: [
                 _particularButton(),
@@ -90,6 +32,65 @@ class VendorTypeField extends StatelessWidget {
         ),
         _widgetTextErroTypeVendor()
       ],
+    );
+  }
+
+  Widget _particularButton() {
+    return GestureDetector(
+      onTap: () {
+        _clickButtonParticular();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        alignment: Alignment.center,
+        height: 50,
+        width: 140,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: filterStore.isTypeParticular
+                ? Colors.purple
+                : Colors.transparent,
+            border: Border.all(
+                color: filterStore.isTypeParticular
+                    ? Colors.purple
+                    : Colors.grey[700])),
+        child: Text(
+          'Particular',
+          style: TextStyle(
+              color:
+              filterStore.isTypeParticular ? Colors.white : Colors.black),
+        ),
+      ),
+    );
+  }
+
+  Widget _profissionalButton() {
+    return GestureDetector(
+      onTap: () {
+        _clickButtonProfissional();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        alignment: Alignment.center,
+        height: 50,
+        width: 140,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: filterStore.isTypeProfissional
+                ? Colors.purple
+                : Colors.transparent,
+            border: Border.all(
+                color: filterStore.isTypeProfissional
+                    ? Colors.purple
+                    : Colors.grey[700])),
+        child: Text(
+          'Profissional',
+          style: TextStyle(
+              color: filterStore.isTypeProfissional
+                  ? Colors.white
+                  : Colors.black),
+        ),
+      ),
     );
   }
 

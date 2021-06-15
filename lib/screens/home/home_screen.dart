@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/stores/home_store.dart';
 
+import 'components/anuncio_tile.dart';
 import 'components/search_dialog.dart';
 import 'components/top_bar.dart';
 
@@ -34,12 +36,12 @@ class HomeScreen extends StatelessWidget {
                 return Container();
               } else {
                 return GestureDetector(
-                  onTap: () => _openSearch(context),
+                    onTap: () => _openSearch(context),
                     child: LayoutBuilder(
-                      builder: (_, constraints){
+                      builder: (_, constraints) {
                         return Container(
-                          width: constraints.biggest.width,
-                          child: Text(homeStore.search));
+                            width: constraints.biggest.width,
+                            child: Text(homeStore.search));
                       },
                     ));
               }
@@ -47,16 +49,16 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: [
             Observer(
-              builder: (_){
-                if(homeStore.search.isEmpty){
+              builder: (_) {
+                if (homeStore.search.isEmpty) {
                   return IconButton(
                       onPressed: () {
                         _openSearch(context);
                       },
                       icon: Icon(Icons.search));
-                }else {
+                } else {
                   return IconButton(
-                    onPressed: (){
+                    onPressed: () {
                       homeStore.setSearch('');
                     },
                     icon: Icon(Icons.close),
@@ -69,6 +71,81 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           children: [
             TopBar(),
+            Expanded(
+              child: Observer(
+                builder: (_) {
+                  if (homeStore.error != null) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error,
+                            color: Colors.white,
+                            size: 100,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'Ocorreu um erro!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    if (homeStore.loading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        ),
+                      );
+                    }
+
+                    if (homeStore.anuncioList.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.border_all,
+                              color: Colors.white,
+                              size: 100,
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              'Nenhum anúncio encontrado!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: homeStore.anuncioList.length,
+                      itemBuilder: (_, index) {
+                        return AnuncioTile(
+                          anuncio: homeStore.anuncioList[index],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
