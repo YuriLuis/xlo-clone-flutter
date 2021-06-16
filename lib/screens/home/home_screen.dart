@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    if (homeStore.loading) {
+                    if (homeStore.showProgress) {
                       return Center(
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation(Colors.white),
@@ -135,11 +135,21 @@ class HomeScreen extends StatelessWidget {
                       );
                     }
                     return ListView.builder(
-                      itemCount: homeStore.anuncioList.length,
+                      itemCount: homeStore.itemCount,
                       itemBuilder: (_, index) {
-                        return AnuncioTile(
-                          anuncio: homeStore.anuncioList[index],
+                        if(index < homeStore.anuncioList.length)
+                          return AnuncioTile(
+                            anuncio: homeStore.anuncioList[index],
+                          );
+
+                        homeStore.loadNextPage();
+                        return Container(
+                          height: 10,
+                          child: LinearProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.purple),
+                          ),
                         );
+
                       },
                     );
                   }

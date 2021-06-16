@@ -18,9 +18,9 @@ abstract class _HomeStore with Store{
          filterStore: filterStore,
          search: search,
          category : category,
+         page: page
        );
-       anuncioList.clear();
-       anuncioList.addAll(novosAnuncios);
+       addNovoAnuncio(novosAnuncios);
        setError(null);
        setLoading(false);
      }catch(e){
@@ -40,6 +40,13 @@ abstract class _HomeStore with Store{
   @observable
   bool loading = false;
 
+  @observable
+  int page = 0;
+
+  @action
+  void loadNextPage(){
+    page++;
+  }
   @action
   void setLoading(bool value) => loading = value;
 
@@ -47,13 +54,19 @@ abstract class _HomeStore with Store{
   void setError(String value) => error = value;
 
   @action
-  void setSearch(String value) => search = value;
+  void setSearch(String value) {
+    search = value;
+    resetPage();
+  }
 
   @observable
   Category category;
 
   @action
-  void setCategory(Category value) => category = value;
+  void setCategory(Category value) {
+    category = value;
+    resetPage();
+  }
 
   @observable
   FilterStore filterStore = FilterStore();
@@ -61,6 +74,30 @@ abstract class _HomeStore with Store{
   FilterStore get clonedFilter => filterStore.clone();
 
   @action
-  void setFilter(FilterStore value) => filterStore = value;
+  void setFilter(FilterStore value) {
+    filterStore = value;
+    resetPage();
+  }
+
+  @action
+  void addNovoAnuncio(List<Anuncio> listAnuncios){
+    if(listAnuncios.length < 10){
+      lastPage = true;
+    }
+    anuncioList.addAll(listAnuncios);
+  }
+
+  @observable
+  bool lastPage = false;
+
+  void resetPage(){
+    page = 0;
+    anuncioList.clear();
+    lastPage = false;
+  }
+
+  @computed
+  int get itemCount => lastPage ? anuncioList.length : anuncioList.length +1;
+  bool get showProgress => loading && anuncioList.isEmpty;
 
 }

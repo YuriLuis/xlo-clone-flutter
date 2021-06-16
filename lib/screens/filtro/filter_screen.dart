@@ -67,19 +67,4 @@ class FiltroScreen extends StatelessWidget {
       ),
     );
   }
-  Widget _widgetTextErroTypeVendor(){
-    return Observer(
-      builder: (_) {
-        if(filterStore.isTypeVendorError != null){
-          return Container(
-            padding: EdgeInsets.only(top: 8),
-            child: Text(filterStore.isTypeVendorError,
-              style: TextStyle(color: Colors.red, fontSize: 14),),
-          );
-        }else {
-          return Container();
-        }
-      },
-    );
-  }
 }

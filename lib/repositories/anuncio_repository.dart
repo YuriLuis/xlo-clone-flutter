@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:path/path.dart' as path;
@@ -12,11 +10,14 @@ import 'package:xlo_mobx/stores/filter_store.dart';
 
 class AnuncioRepository {
   Future<List<Anuncio>> getHomeAnuncioList(
-      {FilterStore filterStore, String search, Category category}) async {
+      {FilterStore filterStore, String search, Category category, int page}) async {
     final queryBuilder =
         QueryBuilder<ParseObject>(ParseObject(keyAnuncioTable));
     
     queryBuilder.includeObject([keyAnuncioOwner, keyAnuncioCategory]);
+
+    ///
+    queryBuilder.setAmountToSkip(page * 20);
     ///traz sempre de 20 em 20 anuncios.
     queryBuilder.setLimit(20);
 
