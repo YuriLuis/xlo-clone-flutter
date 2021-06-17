@@ -40,6 +40,7 @@ class FiltroScreen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 16),
                       height: 50,
                       child: RaisedButton(
+                        elevation: 0,
                         disabledColor: Colors.orange.withAlpha(120),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),
