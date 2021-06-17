@@ -19,7 +19,7 @@ class ErrorBox extends StatelessWidget {
           Icon(Icons.error_outline, color: Colors.white, size: 40,),
           SizedBox(width: 16,),
           Expanded(child: Text(
-            'Oops!! $message. Por favor, tente novamente!',
+            'Oops!! $message ',
             style: TextStyle(color: Colors.white, fontSize: 14),
           ))
         ],

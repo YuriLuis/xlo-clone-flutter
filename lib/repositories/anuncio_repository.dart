@@ -81,6 +81,10 @@ class AnuncioRepository {
 
   Future<void> save(Anuncio anuncio) async {
     try {
+
+      if(anuncio.user == null){
+        return Future.error('Você não está logado! Por Favor Efetue o Login');
+      }
       final parseImages = await _saveImages(anuncio.images);
 
       final parseUser = ParseUser('', '', '')..set(keyUserId, anuncio.user.id);
