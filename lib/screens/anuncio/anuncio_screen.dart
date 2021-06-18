@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 
+import 'components/bottom_bar.dart';
 import 'components/description_panel.dart';
 import 'components/localizacao_panel.dart';
 import 'components/main_panel.dart';
@@ -21,10 +23,15 @@ class AnuncioScreen extends StatelessWidget {
         title: Text('Anuncio'),
         centerTitle: true,
       ),
-      body: ListView(
+      body: Stack(
         children: [
-          _imagensAnuncio(),
-          _detalhesAnuncio()
+          ListView(
+            children: [
+              _imagensAnuncio(),
+              _detalhesAnuncio()
+            ],
+          ),
+          BottomBar(anuncio),
         ],
       ),
     );
@@ -57,7 +64,7 @@ class AnuncioScreen extends StatelessWidget {
         LocalizacaoPanel(anuncio),
         Divider(color: Colors.grey[500],),
         UserPanel(anuncio),
-        SizedBox(height: 16,)
+        SizedBox(height: 120,)
       ],
     ),);
   }
