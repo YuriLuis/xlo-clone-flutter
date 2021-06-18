@@ -3,7 +3,10 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
 
+import 'components/description_panel.dart';
+import 'components/localizacao_panel.dart';
 import 'components/main_panel.dart';
+import 'components/user_panel.dart';
 
 class AnuncioScreen extends StatelessWidget {
   AnuncioScreen(this.anuncio);
@@ -48,7 +51,13 @@ class AnuncioScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         MainPanel(anuncio),
-        Divider(color: Colors.grey[500],)
+        Divider(color: Colors.grey[500],),
+        DescriptionPanel(anuncio: anuncio,),
+        Divider(color: Colors.grey[500],),
+        LocalizacaoPanel(anuncio),
+        Divider(color: Colors.grey[500],),
+        UserPanel(anuncio),
+        SizedBox(height: 16,)
       ],
     ),);
   }
