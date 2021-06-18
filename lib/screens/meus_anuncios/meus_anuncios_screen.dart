@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/stores/meus_anuncios_store.dart';
+
+import 'components/active_tile.dart';
 
 class MeusAnunciosScreen extends StatefulWidget {
   @override
@@ -45,7 +48,17 @@ class _MeusAnunciosScreenState extends State<MeusAnunciosScreen>
       body: TabBarView(
         controller: tabController,
         children: [
-          Container(color: Colors.red,),
+          Observer(builder: (_){
+            if(meusAnunciosStore.activeAnuncios.isEmpty)
+              return Container();
+            else
+              return ListView.builder(
+                itemCount: meusAnunciosStore.activeAnuncios.length,
+                itemBuilder: (_, index){
+                  return ActiveTile(meusAnunciosStore.activeAnuncios[index]);
+                },
+              );
+          },),
           Container(color: Colors.green,),
           Container(color: Colors.yellow,),
         ],
