@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
+import 'package:xlo_mobx/screens/meus_anuncios/meus_anuncios_screen.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
 
 class ContaScreen extends StatelessWidget {
@@ -64,7 +65,10 @@ class ContaScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.purple,
                 fontWeight: FontWeight.w600),),
                 trailing: Icon(Icons.keyboard_arrow_right),
-                onTap: (){},
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) =>
+                  MeusAnunciosScreen()));
+                },
               ),
               ListTile(
                 title: Text('Favoritos',

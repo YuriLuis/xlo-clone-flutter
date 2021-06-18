@@ -157,4 +157,24 @@ class AnuncioRepository {
   bool _isFile(dynamic image) {
     return image is File;
   }
+  Future<List<Anuncio>>getMeusAnuncios(User user) async{
+    final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAnuncioTable));
+
+    queryBuilder.setLimit(100);
+    queryBuilder.orderByDescending(keyAnuncioCreatedAt);
+    queryBuilder.whereEqualTo(keyAnuncioOwner, currentUser.toPointer());
+    queryBuilder.includeObject([keyAnuncioCategory, keyAnuncioOwner]);
+
+    final response = await queryBuilder.query();
+    if (response.success && response.results != null) {
+      return response.results
+          .map((parseObject) => Anuncio.fromParse(parseObject))
+          .toList();
+    }else if(response.success && response.results == null){
+      return [];
+    }else {
+      return Future.error(ParseErrors.getDescription(response.error.code));
+    }
+  }
 }
