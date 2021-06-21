@@ -120,15 +120,15 @@ mixin _$CreateStore on _CreateStore, Store {
   final _$precoTextAtom = Atom(name: '_CreateStore.precoText');
 
   @override
-  String get precoText {
+  String get priceText {
     _$precoTextAtom.reportRead();
-    return super.precoText;
+    return super.priceText;
   }
 
   @override
-  set precoText(String value) {
-    _$precoTextAtom.reportWrite(value, super.precoText, () {
-      super.precoText = value;
+  set priceText(String value) {
+    _$precoTextAtom.reportWrite(value, super.priceText, () {
+      super.priceText = value;
     });
   }
 
@@ -274,7 +274,7 @@ title: ${title},
 descricao: ${descricao},
 category: ${category},
 hidePhone: ${hidePhone},
-precoText: ${precoText},
+precoText: ${priceText},
 error: ${error},
 showErrors: ${showErrors},
 loading: ${loading},

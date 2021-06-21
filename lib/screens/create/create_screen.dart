@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/components/error_box.dart';
+import 'package:xlo_mobx/model/anuncio.dart';
 import 'package:xlo_mobx/screens/create/components/images_field.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
@@ -16,20 +17,26 @@ import 'components/cep_field.dart';
 import 'components/hide_phone_field.dart';
 
 class CreateScreen extends StatefulWidget {
+  CreateScreen({this.anuncio});
+
+  final Anuncio anuncio;
+
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _CreateScreenState createState() => _CreateScreenState(anuncio);
 }
 
 class _CreateScreenState extends State<CreateScreen> {
+  _CreateScreenState(Anuncio anuncio)
+      : createStore = CreateStore(anuncio ?? Anuncio());
 
-  final CreateStore createStore = CreateStore();
-
+  final CreateStore createStore;
 
   @override
   void initState() {
     super.initState();
+
     ///When não precisa dar dispose!
-    when((_) => createStore.savedAnuncio, (){
+    when((_) => createStore.savedAnuncio, () {
       GetIt.I<PageStore>().setPage(0);
     });
   }
@@ -60,18 +67,23 @@ class _CreateScreenState extends State<CreateScreen> {
             child: Observer(
               builder: (_) {
                 if (createStore.loading) {
-                  return Padding(padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Text('Salvando Anúncio',style: TextStyle(
-                        fontSize: 18, color: Colors.purple
-                      ),),
-                      SizedBox(height: 16,),
-                      CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.purple),
-                      )
-                    ],
-                  ),);
+                  return Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Salvando Anúncio',
+                          style: TextStyle(fontSize: 18, color: Colors.purple),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.purple),
+                        )
+                      ],
+                    ),
+                  );
                 } else {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,9 +138,13 @@ class _CreateScreenState extends State<CreateScreen> {
                         );
                       }),
                       HidePhoneField(createStore),
-                      Observer(builder: (_){
-                        return ErrorBox(message: createStore.error,);
-                      },),
+                      Observer(
+                        builder: (_) {
+                          return ErrorBox(
+                            message: createStore.error,
+                          );
+                        },
+                      ),
                       Observer(builder: (_) {
                         return SizedBox(
                           height: 50,

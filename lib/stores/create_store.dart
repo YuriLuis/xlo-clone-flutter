@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/model/anuncio.dart';
@@ -6,12 +7,28 @@ import 'package:xlo_mobx/model/endereco.dart';
 import 'package:xlo_mobx/repositories/anuncio_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
+import 'package:xlo_mobx/helpers/extensions.dart';
 
 part 'create_store.g.dart';
 
 class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store{
+
+  _CreateStore(Anuncio anuncio){
+    title = anuncio.title;
+    descricao = anuncio.description;
+    images = anuncio.images.asObservable();
+    category = anuncio.category;
+    priceText = anuncio.price?.formattedMoney();
+    hidePhone = anuncio.hidePhone;
+
+    if(anuncio != null){
+      cepStore = CepStore(anuncio.address.cep);
+    }else {
+      cepStore = CepStore(null);
+    }
+  }
 
   ObservableList images = ObservableList();
 
@@ -84,7 +101,7 @@ abstract class _CreateStore with Store{
   @action
   void setHidePhone(bool value) => hidePhone = value;
 
-  CepStore cepStore = CepStore();
+  CepStore cepStore;
 
   @computed
   Endereco get endereco => cepStore.endereco;
@@ -100,17 +117,17 @@ abstract class _CreateStore with Store{
   }
 
   @observable
-  String precoText = '';
+  String priceText = '';
 
   @action
-  void setPreco(String value) => precoText = value;
+  void setPreco(String value) => priceText = value;
 
   @computed
   num get price{
-    if(precoText.contains(',')){
-      return num.tryParse(precoText.replaceAll(RegExp('[^0-9]'), '')) / 100;
+    if(priceText.contains(',')){
+      return num.tryParse(priceText.replaceAll(RegExp('[^0-9]'), '')) / 100;
     }else {
-      return num.tryParse(precoText);
+      return num.tryParse(priceText);
     }
   }
 
@@ -119,7 +136,7 @@ abstract class _CreateStore with Store{
   String get precoError {
     if(!showErrors || precoValid){
       return null;
-    }else if(precoText.isEmpty) {
+    }else if(priceText.isEmpty) {
       return 'Campo Obrigatório';
     }else {
       return 'Preço invalido';

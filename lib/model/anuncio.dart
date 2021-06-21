@@ -36,13 +36,13 @@ class Anuncio {
   }
 
   String id;
-  List images;
+  List images = [];
   String title;
   String description;
   Category category;
   Endereco address;
   num price;
-  bool hidePhone;
+  bool hidePhone= false;
   AnuncioStatus status = AnuncioStatus.PEDING;
   DateTime created;
   User user;

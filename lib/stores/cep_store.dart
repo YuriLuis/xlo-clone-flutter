@@ -8,7 +8,7 @@ class CepStore = _CepStore with _$CepStore;
 
 abstract class _CepStore with Store{
 
-  _CepStore(){
+  _CepStore(String initialCep){
     autorun((_){
       if(clearCep.length != 8){
         _resetEndereco();
@@ -16,6 +16,7 @@ abstract class _CepStore with Store{
         _searchCep();
       }
     });
+    setCep(initialCep);
   }
 
   ///*Para não dar erro de variavel nulla
