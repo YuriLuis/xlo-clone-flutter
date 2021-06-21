@@ -35,6 +35,7 @@ class Anuncio {
     status = AnuncioStatus.values[parseObject.get<int>(keyAnuncioStatus)];
   }
 
+
   String id;
   List images = [];
   String title;
