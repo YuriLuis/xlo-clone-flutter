@@ -1,46 +1,42 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:xlo_mobx/model/anuncio.dart';
-import 'package:xlo_mobx/model/category.dart';
-import 'package:xlo_mobx/model/endereco.dart';
-import 'package:xlo_mobx/repositories/anuncio_repository.dart';
+import 'package:xlo_mobx/models/ad.dart';
+import 'package:xlo_mobx/models/address.dart';
+import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/repositories/ad_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
-import 'package:xlo_mobx/helpers/extensions.dart';
 
 part 'create_store.g.dart';
 
 class CreateStore = _CreateStore with _$CreateStore;
 
-abstract class _CreateStore with Store{
+abstract class _CreateStore with Store {
+  _CreateStore(this.ad) {
+    title = ad.title ?? '';
+    description = ad.description ?? '';
+    images = ad.images.asObservable();
+    category = ad.category;
+    priceText = ad.price?.toStringAsFixed(2) ?? '';
+    hidePhone = ad.hidePhone;
 
-  _CreateStore(Anuncio anuncio){
-    title = anuncio.title;
-    descricao = anuncio.description;
-    images = anuncio.images.asObservable();
-    category = anuncio.category;
-    priceText = anuncio.price?.formattedMoney();
-    hidePhone = anuncio.hidePhone;
-
-    if(anuncio != null){
-      cepStore = CepStore(anuncio.address.cep);
-    }else {
+    if (ad.address != null)
+      cepStore = CepStore(ad.address.cep);
+    else
       cepStore = CepStore(null);
-    }
   }
+
+  final Ad ad;
 
   ObservableList images = ObservableList();
 
   @computed
   bool get imagesValid => images.isNotEmpty;
-
   String get imagesError {
-    if(!showErrors || imagesValid){
+    if (!showErrors || imagesValid)
       return null;
-    }else {
-      return 'Insira uma imagem!';
-    }
+    else
+      return 'Insira imagens';
   }
 
   @observable
@@ -50,33 +46,31 @@ abstract class _CreateStore with Store{
   void setTitle(String value) => title = value;
 
   @computed
-  bool get titleValid => title.length >6;
+  bool get titleValid => title.length >= 6;
   String get titleError {
-    if (!showErrors || titleValid) {
+    if (!showErrors || titleValid)
       return null;
-    } else if (title.isEmpty) {
+    else if (title.isEmpty)
       return 'Campo obrigatório';
-    } else {
-      return 'Titulo muito curto';
-    }
+    else
+      return 'Título muito curto';
   }
 
   @observable
-  String descricao = '';
+  String description = '';
 
   @action
-  void setDescricao(String value) => descricao = value;
+  void setDescription(String value) => description = value;
 
   @computed
-  bool get descricaoValid => descricao.length >=10;
-  String get descricaoError {
-    if (!showErrors || descricaoValid) {
+  bool get descriptionValid => description.length >= 10;
+  String get descriptionError {
+    if (!showErrors || descriptionValid)
       return null;
-    } else if (descricao.isEmpty) {
+    else if (description.isEmpty)
       return 'Campo obrigatório';
-    } else {
-      return 'Descrição muito curto';
-    }
+    else
+      return 'Descrição muito curta';
   }
 
   @observable
@@ -88,11 +82,47 @@ abstract class _CreateStore with Store{
   @computed
   bool get categoryValid => category != null;
   String get categoryError {
-    if(!showErrors || categoryValid){
+    if (!showErrors || categoryValid)
       return null;
-    }else {
-      return 'Campo Obrigatório!';
+    else
+      return 'Campo obrigatório';
+  }
+
+  CepStore cepStore;
+
+  @computed
+  Address get address => cepStore.address;
+  bool get addressValid => address != null;
+  String get addressError {
+    if (!showErrors || addressValid)
+      return null;
+    else
+      return 'Campo obrigatório';
+  }
+
+  @observable
+  String priceText = '';
+
+  @action
+  void setPrice(String value) => priceText = value;
+
+  @computed
+  num get price {
+    if (priceText.contains(',')) {
+      return num.tryParse(priceText.replaceAll(RegExp('[^0-9]'), '')) / 100;
+    } else {
+      return num.tryParse(priceText);
     }
+  }
+
+  bool get priceValid => price != null && price <= 9999999;
+  String get priceError {
+    if (!showErrors || priceValid)
+      return null;
+    else if (priceText.isEmpty)
+      return 'Campo obrigatório';
+    else
+      return 'Preço inválido';
   }
 
   @observable
@@ -101,93 +131,51 @@ abstract class _CreateStore with Store{
   @action
   void setHidePhone(bool value) => hidePhone = value;
 
-  CepStore cepStore;
+  @computed
+  bool get formValid =>
+      imagesValid &&
+      titleValid &&
+      descriptionValid &&
+      categoryValid &&
+      addressValid &&
+      priceValid;
 
   @computed
-  Endereco get endereco => cepStore.endereco;
-
-  bool get enderecoValid => endereco != null;
-
-  String get enderecoError{
-    if(!showErrors || enderecoValid){
-      return null;
-    }else {
-      return 'Campo Obrigatório';
-    }
-  }
-
-  @observable
-  String priceText = '';
-
-  @action
-  void setPreco(String value) => priceText = value;
-
-  @computed
-  num get price{
-    if(priceText.contains(',')){
-      return num.tryParse(priceText.replaceAll(RegExp('[^0-9]'), '')) / 100;
-    }else {
-      return num.tryParse(priceText);
-    }
-  }
-
-  bool get precoValid => price != null && price <= 9999999;
-
-  String get precoError {
-    if(!showErrors || precoValid){
-      return null;
-    }else if(priceText.isEmpty) {
-      return 'Campo Obrigatório';
-    }else {
-      return 'Preço invalido';
-    }
-  }
-
-  @computed
-  bool get formValid => imagesValid && titleValid && descricaoValid
-      && categoryValid && enderecoValid && precoValid;
-
   Function get sendPressed => formValid ? _send : null;
-
-  @action
-  Future<void> _send() async {
-    loading = true;
-    Anuncio anuncio = createAnuncio();
-    try{
-      await AnuncioRepository().save(anuncio);
-      savedAnuncio = true;
-    }catch(e){
-      error = e;
-    }
-    loading = false;
-  }
-
-  @observable
-  String error = '';
 
   @observable
   bool showErrors = false;
 
-  @observable
-  bool loading = false;
-
   @action
   void invalidSendPressed() => showErrors = true;
 
-  Anuncio createAnuncio(){
-    final a = Anuncio();
-    a.title = title;
-    a.description = descricao;
-    a.category = category;
-    a.price = price;
-    a.hidePhone = hidePhone;
-    a.images = images;
-    a.address = endereco;
-    a.user = GetIt.I<UserManagerStore>().user;
-    return a;
-  }
+  @observable
+  bool loading = false;
 
   @observable
-  bool savedAnuncio = false;
+  String error;
 
+  @observable
+  bool savedAd = false;
+
+  @action
+  Future<void> _send() async {
+    ad.title = title;
+    ad.description = description;
+    ad.category = category;
+    ad.price = price;
+    ad.hidePhone = hidePhone;
+    ad.images = images;
+    ad.address = address;
+    ad.user = GetIt.I<UserManagerStore>().user;
+
+    loading = true;
+    try {
+      await AdRepository().save(ad);
+      savedAd = true;
+    } catch (e) {
+      error = e;
+    }
+    loading = false;
+  }
 }

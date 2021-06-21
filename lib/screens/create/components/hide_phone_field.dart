@@ -3,14 +3,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
 class HidePhoneField extends StatelessWidget {
-  final CreateStore createStore;
-
   HidePhoneField(this.createStore);
+
+  final CreateStore createStore;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(6),
+      padding: const EdgeInsets.all(6),
       child: Row(
         children: [
           Observer(builder: (_) {
@@ -20,7 +20,11 @@ class HidePhoneField extends StatelessWidget {
               activeColor: Colors.purple,
             );
           }),
-          Expanded(child: Text('Ocultar o meu telefone neste anúncio'))
+          Expanded(
+            child: Text(
+              'Ocultar o meu telefone neste anúncio',
+            ),
+          )
         ],
       ),
     );

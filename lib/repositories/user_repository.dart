@@ -1,16 +1,15 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:xlo_mobx/model/user.dart';
+import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/parse_errors.dart';
 import 'package:xlo_mobx/repositories/table_keys.dart';
 
 class UserRepository {
-
   Future<User> signUp(User user) async {
     final parseUser = ParseUser(user.email, user.password, user.email);
 
     parseUser.set<String>(keyUserName, user.name);
     parseUser.set<String>(keyUserPhone, user.phone);
-    parseUser.set<int>(keyUserType, user.userType.index);
+    parseUser.set(keyUserType, user.type.index);
 
     final response = await parseUser.signUp();
 
@@ -21,19 +20,11 @@ class UserRepository {
     }
   }
 
-  User mapParseToUser(ParseUser parseUser) {
-    return User(
-        id: parseUser.objectId,
-        name: parseUser.get(keyUserName),
-        email: parseUser.get(keyUserEmail),
-        phone: parseUser.get(keyUserPhone),
-        userType: UserType.values[parseUser.get(keyUserType)],
-        createdAt: parseUser.get(keyUserCreatedAt));
-  }
-
   Future<User> loginWithEmail(String email, String password) async {
     final parseUser = ParseUser(email, password, null);
+
     final response = await parseUser.login();
+
     if (response.success) {
       return mapParseToUser(response.result);
     } else {
@@ -46,12 +37,57 @@ class UserRepository {
     if (parseUser != null) {
       final response =
           await ParseUser.getCurrentUserFromServer(parseUser.sessionToken);
-      if(response.success){
+      if (response.success) {
         return mapParseToUser(response.result);
-      }else {
+      } else {
         await parseUser.logout();
       }
     }
     return null;
+  }
+
+  Future<void> save(User user) async {
+    final ParseUser parseUser = await ParseUser.currentUser();
+
+    if (parseUser != null) {
+      parseUser.set<String>(keyUserName, user.name);
+      parseUser.set<String>(keyUserPhone, user.phone);
+      parseUser.set<int>(keyUserType, user.type.index);
+
+      if (user.password != null) {
+        parseUser.password = user.password;
+      }
+
+      final response = await parseUser.save();
+
+      if (!response.success)
+        return Future.error(ParseErrors.getDescription(response.error.code));
+
+      if (user.password != null) {
+        await parseUser.logout();
+
+        final loginResponse =
+            await ParseUser(user.email, user.password, user.email).login();
+
+        if (!loginResponse.success)
+          return Future.error(ParseErrors.getDescription(response.error.code));
+      }
+    }
+  }
+
+  Future<void> logout() async {
+    final ParseUser currentUser = await ParseUser.currentUser();
+    await currentUser.logout();
+  }
+
+  User mapParseToUser(ParseUser parseUser) {
+    return User(
+      id: parseUser.objectId,
+      name: parseUser.get(keyUserName),
+      email: parseUser.get(keyUserEmail),
+      phone: parseUser.get(keyUserPhone),
+      type: UserType.values[parseUser.get(keyUserType)],
+      createdAt: parseUser.get(keyUserCreatedAt),
+    );
   }
 }

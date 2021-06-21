@@ -2,61 +2,49 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xlo_mobx/model/cidade.dart';
-import 'package:xlo_mobx/model/estado.dart';
+import 'package:xlo_mobx/models/city.dart';
+import 'package:xlo_mobx/models/uf.dart';
 
 class IBGERepository {
-  final String keyEstados = 'UF_LIST';
-
-  Future<List<Estado>> getUfListFromApiOrCache() async {
+  Future<List<UF>> getUFList() async {
     final preferences = await SharedPreferences.getInstance();
 
-    if (preferences.containsKey(keyEstados)) {
-      final jsonEstados = json.decode(preferences.get(keyEstados));
+    if (preferences.containsKey('UF_LIST')) {
+      final j = json.decode(preferences.get('UF_LIST'));
 
-      return jsonEstados
-          .map<Estado>((jsonUF) => Estado.fromJson(jsonUF))
-          .toList()
-            ..sort((Estado a, Estado b) =>
-                a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+      return j.map<UF>((j) => UF.fromJson(j)).toList()
+        ..sort((UF a, UF b) =>
+            a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     }
 
     const endpoint =
         'https://servicodados.ibge.gov.br/api/v1/localidades/estados';
 
     try {
-      final responseListEstadosBrasil = await Dio().get<List>(endpoint);
+      final response = await Dio().get<List>(endpoint);
 
-      preferences.setString(
-          keyEstados, json.encode(responseListEstadosBrasil.data));
+      preferences.setString('UF_LIST', json.encode(response.data));
 
-      final listEstadosBrasil = responseListEstadosBrasil.data
-          .map<Estado>((jsonUF) => Estado.fromJson(jsonUF))
-          .toList()
-            ..sort((Estado a, Estado b) =>
-                a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
-
-      return listEstadosBrasil;
+      return response.data.map<UF>((j) => UF.fromJson(j)).toList()
+        ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     } on DioError {
       return Future.error('Falha ao obter lista de Estados');
     }
   }
 
-  Future<List<Cidade>> getCityListFromApiOrCache(Estado estado) async {
-    final endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/'
-        'estados/${estado.id}/municipios';
+  Future<List<City>> getCityListFromApi(UF uf) async {
+    final String endpoint =
+        'http://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf.id}/municipios';
 
     try {
-      final responseListMunicipiosDeUmEstado = await Dio().get<List>(endpoint);
-      final listaDeCidadesEmUmEstado = responseListMunicipiosDeUmEstado.data
-          .map<Cidade>((jsonCidades) => Cidade.fromJson(jsonCidades))
-          .toList()
-            ..sort((Cidade a, Cidade b) =>
-                a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+      final response = await Dio().get<List>(endpoint);
 
-      return listaDeCidadesEmUmEstado;
+      final cityList = response.data.map<City>((j) => City.fromJson(j)).toList()
+        ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+      return cityList;
     } on DioError {
-      return Future.error('Falha ao obter lista de Estados');
+      return Future.error('Falha ao obter lista de Cidades');
     }
   }
 }

@@ -1,47 +1,33 @@
 import 'package:dio/dio.dart';
-import 'package:xlo_mobx/model/cidade.dart';
-import 'package:xlo_mobx/model/endereco.dart';
+import 'package:xlo_mobx/models/address.dart';
+import 'package:xlo_mobx/models/city.dart';
 import 'package:xlo_mobx/repositories/ibge_repository.dart';
 
-import '../model/cidade.dart';
-import '../model/endereco.dart';
-import 'ibge_repository.dart';
+class CepRepository {
+  Future<Address> getAddressFromApi(String cep) async {
+    if (cep == null || cep.isEmpty) return Future.error('CEP Inválido');
 
-class CepRepository{
+    final clearCep = cep.replaceAll(RegExp('[^0-9]'), '');
+    if (clearCep.length != 8) return Future.error('CEP Inválido');
 
-  // ignore: missing_return
-  Future<Endereco> getEnderecoFromApi(String cep) async {
-    if(isCepInvalido(cep)){
-      return Future.error('Cep inválido!');
-    }else {
-      final clearCep = cep.replaceAll(RegExp('[^0-9]'), '');
-      if(clearCep.length != 8){
-        Future.error(' length != 8 trueCep inválido!');
-      }else {
-        final endpoint = 'https://viacep.com.br/ws/$clearCep/json/';
+    final endpoint = 'http://viacep.com.br/ws/$clearCep/json';
 
-        try{
-          final response = await Dio().get<Map>(endpoint);
-          if(response.data.containsKey('erro') && response.data['erro']){
-            return Future.error('Cep não existe');
-          }else {
-            final ufList = await IBGERepository().getUfListFromApiOrCache();
+    try {
+      final response = await Dio().get<Map>(endpoint);
 
-            return Endereco(
-              cep: response.data['cep'],
-              bairro: response.data['bairro'],
-              cidade: Cidade(nome: response.data['localidade']),
-              estado: ufList.firstWhere((uf) => uf.sigla == response.data['uf'])
-            );
-          }
-        } catch(e){
-          return Future.error('Falha ao buscar Cep');
-        }
-      }
+      if (response.data.containsKey('erro') && response.data['erro'])
+        return Future.error('CEP Inválido');
+
+      final ufList = await IBGERepository().getUFList();
+
+      return Address(
+        cep: response.data['cep'],
+        district: response.data['bairro'],
+        city: City(name: response.data['localidade']),
+        uf: ufList.firstWhere((uf) => uf.initials == response.data['uf']),
+      );
+    } catch (e) {
+      return Future.error('Falha ao buscar CEP');
     }
-  }
-  
-  bool isCepInvalido(String cep){
-    return cep.isEmpty || cep == null && cep.length != 8;
   }
 }

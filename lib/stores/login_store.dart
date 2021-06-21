@@ -12,30 +12,22 @@ abstract class _LoginStore with Store {
   @observable
   String email;
 
-  @observable
-  String password;
-
-  @observable
-  bool loading = false;
-
-  @observable
-  String error;
-
   @action
   void setEmail(String value) => email = value;
 
   @computed
-  bool get emailValid => email != null && email.isValidEmail();
-
+  bool get emailValid => email != null && email.isEmailValid();
   String get emailError =>
-      email == null || emailValid ? null : 'Email inválido';
+      email == null || emailValid ? null : 'E-mail inválido';
+
+  @observable
+  String password;
 
   @action
   void setPassword(String value) => password = value;
 
   @computed
-  bool get passwordValid => password != null && password.length >= 6;
-
+  bool get passwordValid => password != null && password.length >= 4;
   String get passwordError =>
       password == null || passwordValid ? null : 'Senha inválida';
 
@@ -43,14 +35,21 @@ abstract class _LoginStore with Store {
   Function get loginPressed =>
       emailValid && passwordValid && !loading ? _login : null;
 
+  @observable
+  bool loading = false;
+
+  @observable
+  String error= '';
+
   @action
   Future<void> _login() async {
     loading = true;
+    error = null;
+
     try {
       final user = await UserRepository().loginWithEmail(email, password);
       GetIt.I<UserManagerStore>().setUser(user);
-      print(user);
-    }catch(e){
+    } catch (e) {
       error = e;
     }
 

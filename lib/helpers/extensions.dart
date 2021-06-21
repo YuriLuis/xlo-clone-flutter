@@ -1,33 +1,21 @@
 import 'package:intl/intl.dart';
 
-extension StringExtension on String{
-
-  bool isValidEmail() {
-    bool result = false;
-    if(this.contains('@') && this.contains(".com")){
-      result = true;
-    }
-    return result;
-  }
-
-  bool isValidPassword() {
-    bool result = false;
-    if(this.length >= 6 && this.isNotEmpty){
-      result = true;
-    }
-    return result;
+extension StringExtension on String {
+  bool isEmailValid() {
+    final RegExp regex = RegExp(
+        r"^(([^<>()[\]\\.,;:\s@\']+(\.[^<>()[\]\\.,;:\s@\']+)*)|(\'.+\'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$");
+    return regex.hasMatch(this);
   }
 }
 
 extension NumberExtension on num {
-
-  String formattedMoney(){
+  String formattedMoney() {
     return NumberFormat('R\$###,##0.00', 'pt-BR').format(this);
   }
 }
 
 extension DateTimeExtension on DateTime {
-  String formattedDate(){
+  String formattedDate() {
     return DateFormat('dd/MM/yyyy HH:mm', 'pt-BR').format(this);
   }
 }

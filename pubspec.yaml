@@ -45,6 +45,9 @@ dependencies:
   carousel_pro: ^1.0.0
   readmore: ^2.1.0
   url_launcher: ^5.7.10
+  toggle_switch: ^0.1.8
+  data_connection_checker: ^0.3.4
+
 
 dev_dependencies:
   flutter_test:

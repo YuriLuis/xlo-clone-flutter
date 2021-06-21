@@ -1,57 +1,42 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:xlo_mobx/model/anuncio.dart';
-import 'package:xlo_mobx/model/category.dart';
-import 'package:xlo_mobx/repositories/anuncio_repository.dart';
+import 'package:xlo_mobx/models/ad.dart';
+import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/repositories/ad_repository.dart';
+import 'package:xlo_mobx/stores/connectivity_store.dart';
 import 'package:xlo_mobx/stores/filter_store.dart';
 
 part 'home_store.g.dart';
 
 class HomeStore = _HomeStore with _$HomeStore;
 
-abstract class _HomeStore with Store{
+abstract class _HomeStore with Store {
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
 
-  _HomeStore(){
-   autorun((_) async{
-     try{
-       setLoading(true);
-       final novosAnuncios = await AnuncioRepository().getHomeAnuncioList(
-         filterStore: filterStore,
-         search: search,
-         category : category,
-         page: page
-       );
-       addNovoAnuncio(novosAnuncios);
-       setError(null);
-       setLoading(false);
-     }catch(e){
-       setError(e);
-     }
-   });
+  _HomeStore() {
+    autorun((_) async {
+      connectivityStore.connected;
+      try {
+        setLoading(true);
+        final newAds = await AdRepository().getHomeAdList(
+          filter: filter,
+          search: search,
+          category: category,
+          page: page,
+        );
+        addNewAds(newAds);
+        setError(null);
+        setLoading(false);
+      } catch (e) {
+        setError(e);
+      }
+    });
   }
 
-  ObservableList<Anuncio> anuncioList = ObservableList<Anuncio>();
+  ObservableList<Ad> adList = ObservableList<Ad>();
 
   @observable
   String search = '';
-
-  @observable
-  String error = '';
-
-  @observable
-  bool loading = false;
-
-  @observable
-  int page = 0;
-
-  @action
-  void loadNextPage(){
-    page++;
-  }
-  @action
-  void setLoading(bool value) => loading = value;
-
-  @action
-  void setError(String value) => error = value;
 
   @action
   void setSearch(String value) {
@@ -69,35 +54,54 @@ abstract class _HomeStore with Store{
   }
 
   @observable
-  FilterStore filterStore = FilterStore();
+  FilterStore filter = FilterStore();
 
-  FilterStore get clonedFilter => filterStore.clone();
+  FilterStore get clonedFilter => filter.clone();
 
   @action
   void setFilter(FilterStore value) {
-    filterStore = value;
+    filter = value;
     resetPage();
   }
 
+  @observable
+  String error;
+
   @action
-  void addNovoAnuncio(List<Anuncio> listAnuncios){
-    if(listAnuncios.length < 10){
-      lastPage = true;
-    }
-    anuncioList.addAll(listAnuncios);
-  }
+  void setError(String value) => error = value;
+
+  @observable
+  bool loading = false;
+
+  @action
+  void setLoading(bool value) => loading = value;
+
+  @observable
+  int page = 0;
 
   @observable
   bool lastPage = false;
 
-  void resetPage(){
+  @action
+  void loadNextPage() {
+    page++;
+  }
+
+  @action
+  void addNewAds(List<Ad> newAds) {
+    if (newAds.length < 10) lastPage = true;
+    adList.addAll(newAds);
+  }
+
+  @computed
+  int get itemCount => lastPage ? adList.length : adList.length + 1;
+
+  void resetPage() {
     page = 0;
-    anuncioList.clear();
+    adList.clear();
     lastPage = false;
   }
 
   @computed
-  int get itemCount => lastPage ? anuncioList.length : anuncioList.length +1;
-  bool get showProgress => loading && anuncioList.isEmpty;
-
+  bool get showProgress => loading && adList.isEmpty;
 }
