@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/stores/meus_anuncios_store.dart';
 
 import 'components/active_tile.dart';
+import 'components/pending_tile.dart';
+import 'components/sold_tile.dart';
 
 class MeusAnunciosScreen extends StatefulWidget {
   @override
@@ -59,8 +60,28 @@ class _MeusAnunciosScreenState extends State<MeusAnunciosScreen>
                 },
               );
           },),
-          Container(color: Colors.green,),
-          Container(color: Colors.yellow,),
+          Observer(builder: (_){
+            if(meusAnunciosStore.pendingAnuncios.isEmpty)
+              return Container();
+            else
+              return ListView.builder(
+                itemCount: meusAnunciosStore.pendingAnuncios.length,
+                itemBuilder: (_, index){
+                  return PendingTile(meusAnunciosStore.pendingAnuncios[index]);
+                },
+              );
+          },),
+          Observer(builder: (_){
+            if(meusAnunciosStore.soldAnuncios.isEmpty)
+              return Container();
+            else
+              return ListView.builder(
+                itemCount: meusAnunciosStore.soldAnuncios.length,
+                itemBuilder: (_, index){
+                  return SoldTile(meusAnunciosStore.soldAnuncios[index]);
+                },
+              );
+          },)
         ],
       ),
     );

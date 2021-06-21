@@ -64,7 +64,7 @@ class AnuncioScreen extends StatelessWidget {
         LocalizacaoPanel(anuncio),
         Divider(color: Colors.grey[500],),
         UserPanel(anuncio),
-        SizedBox(height: 120,)
+        SizedBox(height: anuncio.status == AnuncioStatus.PEDING ? 16 : 120,)
       ],
     ),);
   }
