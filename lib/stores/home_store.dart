@@ -89,7 +89,8 @@ abstract class _HomeStore with Store {
 
   @action
   void addNewAds(List<Ad> newAds) {
-    if (newAds.length < 10) lastPage = true;
+    if (newAds.length < 10 && adList.isEmpty) lastPage = true;
+    adList.clear();
     adList.addAll(newAds);
   }
 

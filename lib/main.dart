@@ -49,11 +49,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         scaffoldBackgroundColor: Colors.purple,
         appBarTheme: AppBarTheme(elevation: 0),
-        textSelectionTheme: TextSelectionThemeData(
-            cursorColor: Colors.purple),),
-      supportedLocales: [
-        Locale('pt', 'BR')
-      ],
+        textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.purple),
+      ),
+      supportedLocales: [Locale('pt', 'BR')],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
