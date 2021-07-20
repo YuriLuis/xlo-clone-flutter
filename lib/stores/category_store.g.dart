@@ -36,22 +36,22 @@ mixin _$CategoryStore on _CategoryStore, Store {
       ActionController(name: '_CategoryStore');
 
   @override
-  void setError(String value) {
+  void setCategories(List<Category> categories) {
     final _$actionInfo = _$_CategoryStoreActionController.startAction(
-        name: '_CategoryStore.setError');
+        name: '_CategoryStore.setCategories');
     try {
-      return super.setError(value);
+      return super.setCategories(categories);
     } finally {
       _$_CategoryStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCategories(List<Category> categories) {
+  void setError(String value) {
     final _$actionInfo = _$_CategoryStoreActionController.startAction(
-        name: '_CategoryStore.setCategories');
+        name: '_CategoryStore.setError');
     try {
-      return super.setCategories(categories);
+      return super.setError(value);
     } finally {
       _$_CategoryStoreActionController.endAction(_$actionInfo);
     }

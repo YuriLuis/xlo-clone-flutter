@@ -31,18 +31,18 @@ mixin _$CepStore on _CepStore, Store {
     });
   }
 
-  final _$enderecoAtom = Atom(name: '_CepStore.endereco');
+  final _$addressAtom = Atom(name: '_CepStore.address');
 
   @override
-  Endereco get endereco {
-    _$enderecoAtom.reportRead();
-    return super.endereco;
+  Address get address {
+    _$addressAtom.reportRead();
+    return super.address;
   }
 
   @override
-  set endereco(Endereco value) {
-    _$enderecoAtom.reportWrite(value, super.endereco, () {
-      super.endereco = value;
+  set address(Address value) {
+    _$addressAtom.reportWrite(value, super.address, () {
+      super.address = value;
     });
   }
 
@@ -97,10 +97,21 @@ mixin _$CepStore on _CepStore, Store {
   }
 
   @override
+  void _reset() {
+    final _$actionInfo =
+        _$_CepStoreActionController.startAction(name: '_CepStore._reset');
+    try {
+      return super._reset();
+    } finally {
+      _$_CepStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 cep: ${cep},
-endereco: ${endereco},
+address: ${address},
 error: ${error},
 loading: ${loading},
 clearCep: ${clearCep}

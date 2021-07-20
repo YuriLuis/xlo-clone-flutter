@@ -50,6 +50,13 @@ mixin _$SignupStore on _SignupStore, Store {
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: '_SignupStore.isFormValid'))
           .value;
+  Computed<Function> _$signUpPressedComputed;
+
+  @override
+  Function get signUpPressed =>
+      (_$signUpPressedComputed ??= Computed<Function>(() => super.signUpPressed,
+              name: '_SignupStore.signUpPressed'))
+          .value;
 
   final _$nameAtom = Atom(name: '_SignupStore.name');
 
@@ -63,36 +70,6 @@ mixin _$SignupStore on _SignupStore, Store {
   set name(String value) {
     _$nameAtom.reportWrite(value, super.name, () {
       super.name = value;
-    });
-  }
-
-  final _$errorAtom = Atom(name: '_SignupStore.error');
-
-  @override
-  String get error {
-    _$errorAtom.reportRead();
-    return super.error;
-  }
-
-  @override
-  set error(String value) {
-    _$errorAtom.reportWrite(value, super.error, () {
-      super.error = value;
-    });
-  }
-
-  final _$loadingAtom = Atom(name: '_SignupStore.loading');
-
-  @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
-  }
-
-  @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
     });
   }
 
@@ -156,6 +133,43 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  final _$loadingAtom = Atom(name: '_SignupStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$errorAtom = Atom(name: '_SignupStore.error');
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  final _$_signUpAsyncAction = AsyncAction('_SignupStore._signUp');
+
+  @override
+  Future<void> _signUp() {
+    return _$_signUpAsyncAction.run(() => super._signUp());
+  }
+
   final _$_SignupStoreActionController = ActionController(name: '_SignupStore');
 
   @override
@@ -214,32 +228,22 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
-  void setLoading(bool value) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setLoading');
-    try {
-      return super.setLoading(value);
-    } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 name: ${name},
-error: ${error},
-loading: ${loading},
 email: ${email},
 phone: ${phone},
 pass1: ${pass1},
 pass2: ${pass2},
+loading: ${loading},
+error: ${error},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 phoneValid: ${phoneValid},
 pass1Valid: ${pass1Valid},
 pass2Valid: ${pass2Valid},
-isFormValid: ${isFormValid}
+isFormValid: ${isFormValid},
+signUpPressed: ${signUpPressed}
     ''';
   }
 }

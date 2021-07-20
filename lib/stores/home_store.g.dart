@@ -15,6 +15,13 @@ mixin _$HomeStore on _HomeStore, Store {
   int get itemCount => (_$itemCountComputed ??=
           Computed<int>(() => super.itemCount, name: '_HomeStore.itemCount'))
       .value;
+  Computed<bool> _$showProgressComputed;
+
+  @override
+  bool get showProgress =>
+      (_$showProgressComputed ??= Computed<bool>(() => super.showProgress,
+              name: '_HomeStore.showProgress'))
+          .value;
 
   final _$searchAtom = Atom(name: '_HomeStore.search');
 
@@ -28,6 +35,36 @@ mixin _$HomeStore on _HomeStore, Store {
   set search(String value) {
     _$searchAtom.reportWrite(value, super.search, () {
       super.search = value;
+    });
+  }
+
+  final _$categoryAtom = Atom(name: '_HomeStore.category');
+
+  @override
+  Category get category {
+    _$categoryAtom.reportRead();
+    return super.category;
+  }
+
+  @override
+  set category(Category value) {
+    _$categoryAtom.reportWrite(value, super.category, () {
+      super.category = value;
+    });
+  }
+
+  final _$filterAtom = Atom(name: '_HomeStore.filter');
+
+  @override
+  FilterStore get filter {
+    _$filterAtom.reportRead();
+    return super.filter;
+  }
+
+  @override
+  set filter(FilterStore value) {
+    _$filterAtom.reportWrite(value, super.filter, () {
+      super.filter = value;
     });
   }
 
@@ -76,36 +113,6 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
-  final _$categoryAtom = Atom(name: '_HomeStore.category');
-
-  @override
-  Category get category {
-    _$categoryAtom.reportRead();
-    return super.category;
-  }
-
-  @override
-  set category(Category value) {
-    _$categoryAtom.reportWrite(value, super.category, () {
-      super.category = value;
-    });
-  }
-
-  final _$filterStoreAtom = Atom(name: '_HomeStore.filterStore');
-
-  @override
-  FilterStore get filterStore {
-    _$filterStoreAtom.reportRead();
-    return super.filterStore;
-  }
-
-  @override
-  set filterStore(FilterStore value) {
-    _$filterStoreAtom.reportWrite(value, super.filterStore, () {
-      super.filterStore = value;
-    });
-  }
-
   final _$lastPageAtom = Atom(name: '_HomeStore.lastPage');
 
   @override
@@ -122,39 +129,6 @@ mixin _$HomeStore on _HomeStore, Store {
   }
 
   final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
-
-  @override
-  void loadNextPage() {
-    final _$actionInfo = _$_HomeStoreActionController.startAction(
-        name: '_HomeStore.loadNextPage');
-    try {
-      return super.loadNextPage();
-    } finally {
-      _$_HomeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setLoading(bool value) {
-    final _$actionInfo =
-        _$_HomeStoreActionController.startAction(name: '_HomeStore.setLoading');
-    try {
-      return super.setLoading(value);
-    } finally {
-      _$_HomeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setError(String value) {
-    final _$actionInfo =
-        _$_HomeStoreActionController.startAction(name: '_HomeStore.setError');
-    try {
-      return super.setError(value);
-    } finally {
-      _$_HomeStoreActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setSearch(String value) {
@@ -190,11 +164,44 @@ mixin _$HomeStore on _HomeStore, Store {
   }
 
   @override
-  void addNovoAnuncio(List<Anuncio> listAnuncios) {
-    final _$actionInfo = _$_HomeStoreActionController.startAction(
-        name: '_HomeStore.addNovoAnuncio');
+  void setError(String value) {
+    final _$actionInfo =
+        _$_HomeStoreActionController.startAction(name: '_HomeStore.setError');
     try {
-      return super.addNovoAnuncio(listAnuncios);
+      return super.setError(value);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoading(bool value) {
+    final _$actionInfo =
+        _$_HomeStoreActionController.startAction(name: '_HomeStore.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void loadNextPage() {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.loadNextPage');
+    try {
+      return super.loadNextPage();
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addNewAds(List<Ad> newAds) {
+    final _$actionInfo =
+        _$_HomeStoreActionController.startAction(name: '_HomeStore.addNewAds');
+    try {
+      return super.addNewAds(newAds);
     } finally {
       _$_HomeStoreActionController.endAction(_$actionInfo);
     }
@@ -204,13 +211,14 @@ mixin _$HomeStore on _HomeStore, Store {
   String toString() {
     return '''
 search: ${search},
+category: ${category},
+filter: ${filter},
 error: ${error},
 loading: ${loading},
 page: ${page},
-category: ${category},
-filterStore: ${filterStore},
 lastPage: ${lastPage},
-itemCount: ${itemCount}
+itemCount: ${itemCount},
+showProgress: ${showProgress}
     ''';
   }
 }

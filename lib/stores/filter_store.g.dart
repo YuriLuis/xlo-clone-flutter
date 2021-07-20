@@ -23,6 +23,13 @@ mixin _$FilterStore on _FilterStore, Store {
           () => super.isTypeParticular,
           name: '_FilterStore.isTypeParticular'))
       .value;
+  Computed<bool> _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_FilterStore.isFormValid'))
+          .value;
 
   final _$orderByAtom = Atom(name: '_FilterStore.orderBy');
 
@@ -84,47 +91,14 @@ mixin _$FilterStore on _FilterStore, Store {
     });
   }
 
-  final _$isParticularVendorAtom =
-      Atom(name: '_FilterStore.isParticularVendor');
-
-  @override
-  bool get isParticularVendor {
-    _$isParticularVendorAtom.reportRead();
-    return super.isParticularVendor;
-  }
-
-  @override
-  set isParticularVendor(bool value) {
-    _$isParticularVendorAtom.reportWrite(value, super.isParticularVendor, () {
-      super.isParticularVendor = value;
-    });
-  }
-
-  final _$isProfissionalVendorAtom =
-      Atom(name: '_FilterStore.isProfissionalVendor');
-
-  @override
-  bool get isProfissionalVendor {
-    _$isProfissionalVendorAtom.reportRead();
-    return super.isProfissionalVendor;
-  }
-
-  @override
-  set isProfissionalVendor(bool value) {
-    _$isProfissionalVendorAtom.reportWrite(value, super.isProfissionalVendor,
-        () {
-      super.isProfissionalVendor = value;
-    });
-  }
-
   final _$_FilterStoreActionController = ActionController(name: '_FilterStore');
 
   @override
-  void setOrderBy(OrderBy value) {
+  void serOrderBy(OrderBy value) {
     final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.setOrderBy');
+        name: '_FilterStore.serOrderBy');
     try {
-      return super.setOrderBy(value);
+      return super.serOrderBy(value);
     } finally {
       _$_FilterStoreActionController.endAction(_$actionInfo);
     }
@@ -153,11 +127,11 @@ mixin _$FilterStore on _FilterStore, Store {
   }
 
   @override
-  void setParticularVendor() {
+  void selectVendorType(int value) {
     final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.setParticularVendor');
+        name: '_FilterStore.selectVendorType');
     try {
-      return super.setParticularVendor();
+      return super.selectVendorType(value);
     } finally {
       _$_FilterStoreActionController.endAction(_$actionInfo);
     }
@@ -170,10 +144,9 @@ orderBy: ${orderBy},
 minPrice: ${minPrice},
 maxPrice: ${maxPrice},
 vendorType: ${vendorType},
-isParticularVendor: ${isParticularVendor},
-isProfissionalVendor: ${isProfissionalVendor},
 priceError: ${priceError},
-isTypeParticular: ${isTypeParticular}
+isTypeParticular: ${isTypeParticular},
+isFormValid: ${isFormValid}
     ''';
   }
 }

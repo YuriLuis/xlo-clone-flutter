@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BarButton extends StatelessWidget {
-
-  BarButton({this.boxDecoration, this.label, this.onTap});
-
-  final _textStyle = TextStyle(
-      color: Colors.white,
-      fontSize: 18,
-      fontWeight: FontWeight.w600
-  );
-
-  final BoxDecoration boxDecoration;
+  BarButton({this.label, this.decoration, this.onTap});
 
   final String label;
-
+  final BoxDecoration decoration;
   final VoidCallback onTap;
 
   @override
@@ -22,11 +13,17 @@ class BarButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          decoration: boxDecoration,
-          alignment: Alignment.center,
           height: 40,
-          child: Text(label,
-          style: _textStyle,),
+          alignment: Alignment.center,
+          decoration: decoration,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );

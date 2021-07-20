@@ -13,7 +13,6 @@ class ImageDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Image.file(image),
-          // ignore: deprecated_member_use
           FlatButton(
             child: const Text('Excluir'),
             textColor: Colors.red,
